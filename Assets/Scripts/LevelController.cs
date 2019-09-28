@@ -38,7 +38,7 @@ public class LevelController : MonoBehaviour
     {
         float x, y, z;
         z = -1;
-        x = Random.Range(-4f, 4f);
+        x = Random.Range(-3f, 3f);
         y = Random.Range(-3.5f, 3);
         return new Vector3(x, y, z);
     }
