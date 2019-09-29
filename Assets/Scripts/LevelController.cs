@@ -8,6 +8,8 @@ public class LevelController : MonoBehaviour
     public GameObject target;
     public Texture2D[] arr;
     // public Text Score;
+    public const int Max_Life = 100;
+    private const int decrease_score = 10;
     public static LevelController lc;
     public float score;
     private float time;
@@ -16,6 +18,7 @@ public class LevelController : MonoBehaviour
     public string name_template = "../Resources/art43/layer";
     public string format = ".png";
     public Slider score_slider;
+    private int life_points;
     // Start is called before the first frame update
     void Start()
     {
@@ -23,11 +26,16 @@ public class LevelController : MonoBehaviour
         if (lc == null)
             lc = this.gameObject.GetComponent<LevelController>();
         Background = GameObject.Find("Background");
+        this.life_points = Max_Life;
     }
     // Update is called once per frame
     void Update()
     {
         float cur_time = Time.time;
+        if(life_points <= 0)
+        {
+            
+        }
         if(cur_time - time > 1)
         {
             time = cur_time;
