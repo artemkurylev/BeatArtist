@@ -5,7 +5,10 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/TrackChooseMenu.unity
     guid: 37e842c68a5f89747ad384732d6e7711
+  - enabled: 1
+    path: Assets/Scenes/Level1.unity
+    guid: 9246a598748656a409b84077b8ad0ffb
   m_configObjects: {}

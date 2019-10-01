@@ -19,6 +19,9 @@ public class LevelController : MonoBehaviour
     public string format = ".png";
     public Slider score_slider;
     private int life_points;
+    public static float scene_Height = 10.0f;
+    public static float scene_Width = 5.6f;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -26,6 +29,8 @@ public class LevelController : MonoBehaviour
         if (lc == null)
             lc = this.gameObject.GetComponent<LevelController>();
         Background = GameObject.Find("Background");
+        int x = GameObject.Find("Background").transform.childCount;
+        // int x = Background.transform.childCount;
         this.life_points = Max_Life;
     }
     // Update is called once per frame
@@ -59,9 +64,15 @@ public class LevelController : MonoBehaviour
             Score.text = this.score.ToString();
         }*/
         layer_number++;
-        string new_layer = name_template + layer_number.ToString() + format;
+        //string new_layer = name_template + layer_number.ToString() + format;
         Texture2D tex = arr[layer_number];
-        Background.transform.GetChild(0).gameObject.GetComponent<SpriteRenderer>().sprite = Sprite.Create(tex, new Rect(0.0f, 0.0f, tex.width, tex.height), new Vector2(0.5f, 0.5f), 100.0f);
+        Debug.Log(layer_number);
+        Background = GameObject.Find("Background");
+        int x = GameObject.Find("Background").transform.childCount;
+        GameObject BackImage = GameObject.Find("BackImage");
+        Transform X = Background.transform;
+        x = X.childCount;
+        BackImage.GetComponent<SpriteRenderer>().sprite = Sprite.Create(tex, new Rect(0.0f, 0.0f, tex.width, tex.height), new Vector2(0.5f, 0.5f), 100.0f);
 
         score_slider.value = this.score;
     }
