@@ -43,6 +43,10 @@ public class Target : MonoBehaviour
                     Destroy(this.gameObject);
                     UpdateScore();
                 }
+                else
+                {
+                    LevelController.lc.decreaseLIfe();
+                }
             }
 
         }
@@ -50,6 +54,7 @@ public class Target : MonoBehaviour
         {
             Debug.Log("Time ended");
             Destroy(this.gameObject);
+            LevelController.lc.decreaseLIfe();
         }
     }
     void UpdateScore()

@@ -2,26 +2,27 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class LevelController : MonoBehaviour
 {
     public GameObject target;
     public Texture2D[] arr;
     // public Text Score;
-    public const int Max_Life = 100;
+    public const float Max_Life = 100;
     private const int decrease_score = 10;
     public static LevelController lc;
     public float score;
     private float time;
     private GameObject Background;
     private int layer_number = 1;
-    public string name_template = "../Resources/art43/layer";
-    public string format = ".png";
     public Slider score_slider;
-    private int life_points;
+    public Slider hp_slider;
+    private float life_points;
     public static float scene_Height = 10.0f;
     public static float scene_Width = 5.6f;
-
+    public const float stake_life_decrease = 0.2f;
+    public const float stake_life_increase = 0.01f;
     // Start is called before the first frame update
     void Start()
     {
@@ -32,6 +33,7 @@ public class LevelController : MonoBehaviour
         int x = GameObject.Find("Background").transform.childCount;
         // int x = Background.transform.childCount;
         this.life_points = Max_Life;
+        hp_slider.value = this.life_points;
     }
     // Update is called once per frame
     void Update()
@@ -39,13 +41,14 @@ public class LevelController : MonoBehaviour
         float cur_time = Time.time;
         if(life_points <= 0)
         {
-            
+            SceneManager.LoadScene("TrackChooseMenu");
         }
         if(cur_time - time > 1)
         {
             time = cur_time;
             Vector3 pos = this.transform.position; 
             Instantiate(target, GeneratePosition(), new Quaternion(0,0,0,0));
+            increaseLife();
         }
     }
     private Vector3 GeneratePosition()
@@ -75,5 +78,16 @@ public class LevelController : MonoBehaviour
         BackImage.GetComponent<SpriteRenderer>().sprite = Sprite.Create(tex, new Rect(0.0f, 0.0f, tex.width, tex.height), new Vector2(0.5f, 0.5f), 100.0f);
 
         score_slider.value = this.score;
+
+    }
+    public void increaseLife()
+    {
+        this.life_points += this.life_points * stake_life_increase;
+        hp_slider.value = this.life_points;
+    }
+    public void decreaseLIfe()
+    {
+        this.life_points -= Max_Life * stake_life_decrease;
+        hp_slider.value = this.life_points;
     }
 }
