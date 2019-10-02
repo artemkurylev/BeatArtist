@@ -42,10 +42,12 @@ public class Target : MonoBehaviour
                     Debug.Log("Click on object");
                     Destroy(this.gameObject);
                     UpdateScore();
+                    LevelController.lc.super_touch = true;
                 }
                 else
                 {
-                    LevelController.lc.decreaseLIfe();
+
+                    //LevelController.lc.decreaseLIfe();
                 }
             }
 

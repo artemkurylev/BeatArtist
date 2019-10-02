@@ -19,10 +19,12 @@ public class LevelController : MonoBehaviour
     public Slider score_slider;
     public Slider hp_slider;
     private float life_points;
+    public float bpm;
     public static float scene_Height = 10.0f;
     public static float scene_Width = 5.6f;
-    public const float stake_life_decrease = 0.2f;
+    public float stake_life_decrease = 0.2f;
     public const float stake_life_increase = 0.01f;
+    public bool super_touch = false;
     // Start is called before the first frame update
     void Start()
     {
@@ -43,12 +45,22 @@ public class LevelController : MonoBehaviour
         {
             SceneManager.LoadScene("TrackChooseMenu");
         }
-        if(cur_time - time > 1)
+        if(cur_time - time > 60/bpm)
         {
             time = cur_time;
             Vector3 pos = this.transform.position; 
             Instantiate(target, GeneratePosition(), new Quaternion(0,0,0,0));
             increaseLife();
+        }
+        if(Input.touchCount > 0)
+        {
+            Touch touch = Input.GetTouch(0);
+            if (touch.phase == TouchPhase.Ended)
+            {
+                if (!super_touch)
+                    decreaseLIfe();
+                super_touch = false;
+            }
         }
     }
     private Vector3 GeneratePosition()
