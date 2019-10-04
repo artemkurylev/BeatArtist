@@ -7,8 +7,8 @@ public class Target : MonoBehaviour
 {
     public const float LifeTime = 2.0f;
     private float time;
-    private int maxScore = 500;
-    public int minScore = 50;
+    public static int maxScore = 500;
+    public static int minScore = 50;
     
     // Start is called before the first frame update
     void Start()

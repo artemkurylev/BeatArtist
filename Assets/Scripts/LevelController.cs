@@ -3,28 +3,39 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using UnityEngine.Networking;
 
 public class LevelController : MonoBehaviour
 {
-    public GameObject target;
-    public Texture2D[] arr;
+    /// <summary>
+    /// Блок с переменными
+    /// </summary>
+    public GameObject target; // Объект кружочка - цели
+    public Texture2D[] layers; // Массив со слоями 
     // public Text Score;
-    public const float Max_Life = 100;
-    private const int decrease_score = 10;
-    public static LevelController lc;
-    public float score;
+    public const float Max_Life = 100; // Максимально возможный запас жизни игрока
+    public static LevelController lc; // Собственно сам контроллер, чтобы к нему было легко получить доступ от остальных объектов
+    public float Score; // Текущее кол-во очков
     private float time;
     private GameObject Background;
     private int layer_number = 1;
-    public Slider score_slider;
-    public Slider hp_slider;
-    private float life_points;
-    public float bpm;
-    public static float scene_Height = 10.0f;
+    public Slider score_slider; // Слайдер для отображения очков игрока
+    public Slider hp_slider; // Слайдер для отображения жизней игрока
+    private float life_points; // Текущее кол-во очков здоровья
+    public float bpm; // BPM трека 
+    public static float scene_Height = 10.0f; // Размеры сцены
     public static float scene_Width = 5.6f;
-    public float stake_life_decrease = 0.2f;
+    public float stake_life_decrease = 0.2f; // Уменьшение жизни при промахе / исчезновении цели без попадания
     public const float stake_life_increase = 0.01f;
-    public bool super_touch = false;
+    public bool super_touch = false; // Нужна для определение, было ли касание по какой либо цели
+    public AudioClip clip; // Здесь хранится трек
+    private AudioSource song; // Здесь хранится трек
+    //public string url; - пока не используется
+    private int MaxPoints; // Максимальное кол-во очков для уровня
+    private int NumOfTargets; //  Количество целей, появляющихся на уровне
+    private int pointsPerLayer;
+    public int percentToShowPict = 90;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -32,11 +43,34 @@ public class LevelController : MonoBehaviour
         if (lc == null)
             lc = this.gameObject.GetComponent<LevelController>();
         Background = GameObject.Find("Background");
-        int x = GameObject.Find("Background").transform.childCount;
         // int x = Background.transform.childCount;
         this.life_points = Max_Life;
         hp_slider.value = this.life_points;
+        song = GetComponent<AudioSource>();
+        song.clip = clip;
+        NumOfTargets = (int)song.clip.length / (int)bpm;
+        MaxPoints = NumOfTargets * Target.maxScore;
+        pointsPerLayer = (MaxPoints * percentToShowPict / 100) / layers.Length;
+
+        //StartCoroutine(GetAudioClip());
+        if (song.clip != null && song.clip.loadState == AudioDataLoadState.Loaded)
+            song.Play();
     }
+    //IEnumerator GetAudioClip()
+    //{
+    //    using (UnityWebRequest www = UnityWebRequestMultimedia.GetAudioClip(url, AudioType.MPEG))
+    //    {
+    //        yield return www.SendWebRequest();
+    //        if (www.isNetworkError)
+    //        {
+    //            Debug.Log(www.error);
+    //        }
+    //        else
+    //        {
+    //            song.clip = DownloadHandlerAudioClip.GetContent(www);
+    //        }
+    //    }
+    //}
     // Update is called once per frame
     void Update()
     {
@@ -73,23 +107,22 @@ public class LevelController : MonoBehaviour
     }
     public void updateScore(float score)
     {
-        this.score += score;
+        this.Score += score;
         /*f (Score != null)
         {
-            Score.text = this.score.ToString();
+            Score.text = this.Score.ToString();
         }*/
-        layer_number++;
-        //string new_layer = name_template + layer_number.ToString() + format;
-        Texture2D tex = arr[layer_number];
-        Debug.Log(layer_number);
-        Background = GameObject.Find("Background");
-        int x = GameObject.Find("Background").transform.childCount;
-        GameObject BackImage = GameObject.Find("BackImage");
-        Transform X = Background.transform;
-        x = X.childCount;
-        BackImage.GetComponent<SpriteRenderer>().sprite = Sprite.Create(tex, new Rect(0.0f, 0.0f, tex.width, tex.height), new Vector2(0.5f, 0.5f), 100.0f);
+        if (this.Score / this.pointsPerLayer > layer_number - 1)
+        {
+            layer_number++;
+            //string new_layer = name_template + layer_number.ToString() + format;
+            Texture2D tex = layers[layer_number];
+            Debug.Log(layer_number);
+            GameObject BackImage = GameObject.Find("BackImage");
+            BackImage.GetComponent<SpriteRenderer>().sprite = Sprite.Create(tex, new Rect(0.0f, 0.0f, tex.width, tex.height), new Vector2(0.5f, 0.5f), 100.0f);
+        }
 
-        score_slider.value = this.score;
+        score_slider.value = this.Score;
 
     }
     public void increaseLife()
