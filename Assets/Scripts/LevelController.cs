@@ -46,15 +46,19 @@ public class LevelController : MonoBehaviour
         // int x = Background.transform.childCount;
         this.life_points = Max_Life;
         hp_slider.value = this.life_points;
-        song = GetComponent<AudioSource>();
-        song.clip = clip;
-        NumOfTargets = (int)song.clip.length / (int)bpm;
-        MaxPoints = NumOfTargets * Target.maxScore;
-        pointsPerLayer = (MaxPoints * percentToShowPict / 100) / layers.Length;
-
+        GameObject songObject = GameObject.Find("Song");
+        song = songObject.GetComponent<AudioSource>();
+        
+        
         //StartCoroutine(GetAudioClip());
         if (song.clip != null && song.clip.loadState == AudioDataLoadState.Loaded)
             song.Play();
+        Debug.Log(this.song.clip.length);
+        NumOfTargets = (int)this.song.clip.length / (int)bpm;
+        
+        MaxPoints = NumOfTargets * Target.maxScore;
+        pointsPerLayer = (MaxPoints * percentToShowPict / 100) / this.layers.Length;
+
     }
     //IEnumerator GetAudioClip()
     //{
