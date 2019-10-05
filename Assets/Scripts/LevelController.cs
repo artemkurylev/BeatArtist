@@ -17,6 +17,8 @@ public class LevelController : MonoBehaviour
     public static LevelController lc; // Собственно сам контроллер, чтобы к нему было легко получить доступ от остальных объектов
     public float Score; // Текущее кол-во очков
     private float time;
+    public Text FinalScore;
+    public GameObject LoseCanvas;
     private GameObject Background;
     private int layer_number = 1;
     public Slider score_slider; // Слайдер для отображения очков игрока
@@ -46,6 +48,7 @@ public class LevelController : MonoBehaviour
         // int x = Background.transform.childCount;
         this.life_points = Max_Life;
         hp_slider.value = this.life_points;
+        
         GameObject songObject = GameObject.Find("Song");
         song = songObject.GetComponent<AudioSource>();
         
@@ -54,11 +57,11 @@ public class LevelController : MonoBehaviour
         if (song.clip != null && song.clip.loadState == AudioDataLoadState.Loaded)
             song.Play();
         Debug.Log(this.song.clip.length);
-        NumOfTargets = (int)this.song.clip.length / (int)bpm;
+        NumOfTargets = (int)this.song.clip.length * 60/ (int)bpm;
         
         MaxPoints = NumOfTargets * Target.maxScore;
         pointsPerLayer = (MaxPoints * percentToShowPict / 100) / this.layers.Length;
-
+        score_slider.maxValue = MaxPoints;
     }
     //IEnumerator GetAudioClip()
     //{
@@ -99,6 +102,15 @@ public class LevelController : MonoBehaviour
                     decreaseLIfe();
                 super_touch = false;
             }
+        }
+        if (!this.song.isPlaying)
+        {
+            int score = (int)this.Score;
+
+            FinalScore.text = " Your final score:\n" + score.ToString() + " of " + this.MaxPoints.ToString(); 
+            // End Level
+            GameObject.Find("FinalCanvas").SetActive(true);
+
         }
     }
     private Vector3 GeneratePosition()
