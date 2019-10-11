@@ -97,7 +97,6 @@ public class LevelController : MonoBehaviour
             FinalScore.text = " Your final score:\n" + score.ToString() + " of " + this.MaxPoints.ToString();
                 // End Level
             FinalCanvas.SetActive(true);
-
         }
         else
         {
