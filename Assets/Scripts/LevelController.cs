@@ -89,6 +89,7 @@ public class LevelController : MonoBehaviour
             LoseCanvas.SetActive(true);
             int finalScore = (int)this.Score;
             FinalScore.text = "Your final score is: " + finalScore.ToString() + "of " + lc.MaxPoints;
+            song.Stop();
         }
         else
         {
