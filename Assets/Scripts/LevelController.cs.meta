@@ -3,7 +3,14 @@ guid: 57283ba03c4f62e48ab06d93d88f3ae2
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - target: {fileID: 7687145594891072768, guid: f942e5654d4de014f8852d0ee1c66745,
+      type: 3}
+  - FinalScore: {instanceID: 0}
+  - LoseCanvas: {instanceID: 0}
+  - score_slider: {instanceID: 0}
+  - hp_slider: {instanceID: 0}
+  - clip: {instanceID: 0}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

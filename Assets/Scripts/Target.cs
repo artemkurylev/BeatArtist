@@ -6,14 +6,14 @@ using UnityEngine.EventSystems;
 public class Target : MonoBehaviour
 {
     public const float LifeTime = 2.0f;
-    private float time;
-    public static int maxScore = 500;
-    public static int minScore = 50;
+    private float m_time;
+    public static int MaxScore = 500;
+    public static int MinScore = 50;
     
     // Start is called before the first frame update
     void Start()
     {
-        time = Time.time;
+        m_time = Time.time;
     }
     
     // Update is called once per frame
@@ -30,8 +30,8 @@ public class Target : MonoBehaviour
                 //Destroy(this.gameObject);
                 //UpdateScore();
                 Vector2 touch_position = touch.position;
-                touch_position.x = touch_position.x / width * LevelController.scene_Width - LevelController.scene_Width/2;
-                touch_position.y = touch_position.y / height * LevelController.scene_Height - LevelController.scene_Height / 2;
+                touch_position.x = touch_position.x / width * LevelController.SceneWidth - LevelController.SceneWidth/2;
+                touch_position.y = touch_position.y / height * LevelController.SceneHeight - LevelController.SceneHeight / 2;
 
                 Vector2 this_position = this.transform.position;
                 //this_position.x /= width;
@@ -42,7 +42,7 @@ public class Target : MonoBehaviour
                     Debug.Log("Click on object");
                     Destroy(this.gameObject);
                     UpdateScore();
-                    LevelController.lc.super_touch = true;
+                    LevelController.lc.SuperTouch = true;
                 }
                 else
                 {
@@ -52,7 +52,7 @@ public class Target : MonoBehaviour
             }
 
         }
-        if (Time.time - time > LifeTime)
+        if (Time.time - m_time > LifeTime)
         {
             Debug.Log("Time ended");
             Destroy(this.gameObject);
@@ -61,15 +61,19 @@ public class Target : MonoBehaviour
     }
     void UpdateScore()
     {
-        float clickTime = Time.time - time;
-        float score = (1 - clickTime / LifeTime) * maxScore;
+        float clickTime = Time.time - m_time;
+        float score = (1 - clickTime / LifeTime) * MaxScore;
         LevelController.lc.updateScore(score);
     }
 
-    //public void OnMouseDown()
-    //{
-    //    Debug.Log("Click on object");
-    //    UpdateScore();
-    //    Destroy(this.gameObject);
-    //}
+    public void OnMouseDown()
+    {
+        if (LevelController.lc.Developer_Mode)
+        {
+            Debug.Log("Click on object");
+            UpdateScore();
+            Destroy(this.gameObject);
+        }
+        
+    }
 }
