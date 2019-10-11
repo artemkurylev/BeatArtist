@@ -10,45 +10,45 @@ public class LevelController : MonoBehaviour
     /// <summary>
     /// Блок с переменными
     /// </summary>
-    public GameObject target; // Объект кружочка - цели
+    public GameObject RoundTarget; // Объект кружочка - цели
     public Texture2D[] layers; // Массив со слоями 
     public bool Developer_Mode;
     // public Text Score;
-    public const float Max_Life = 100; // Максимально возможный запас жизни игрока
+    public const float MaxLife = 100; // Максимально возможный запас жизни игрока
     public static LevelController lc; // Собственно сам контроллер, чтобы к нему было легко получить доступ от остальных объектов
     public float Score; // Текущее кол-во очков
-    private float time;
+    private float m_time;
     public Text FinalScore;
     public GameObject LoseCanvas;
     private GameObject Background;
     private int layer_number = 1;
-    public Slider score_slider; // Слайдер для отображения очков игрока
-    public Slider hp_slider; // Слайдер для отображения жизней игрока
-    private float life_points; // Текущее кол-во очков здоровья
+    public Slider ScoreSlider; // Слайдер для отображения очков игрока
+    public Slider HpSlider; // Слайдер для отображения жизней игрока
+    private float m_lifePoints; // Текущее кол-во очков здоровья
     public float bpm; // BPM трека 
-    public static float scene_Height = 10.0f; // Размеры сцены
-    public static float scene_Width = 5.6f;
-    public float stake_life_decrease = 0.2f; // Уменьшение жизни при промахе / исчезновении цели без попадания
+    public static float SceneHeight = 10.0f; // Размеры сцены
+    public static float SceneWidth = 5.6f;
+    public float LifeDecrease = 0.2f; // Уменьшение жизни при промахе / исчезновении цели без попадания
     public const float stake_life_increase = 0.01f;
-    public bool super_touch = false; // Нужна для определение, было ли касание по какой либо цели
-    public AudioClip clip; // Здесь хранится трек
+    public bool SuperTouch = false; // Нужна для определение, было ли касание по какой либо цели
+    public AudioClip Clip; // Здесь хранится трек
     private AudioSource song; // Здесь хранится трек
     //public string url; - пока не используется
     private int MaxPoints; // Максимальное кол-во очков для уровня
     private int NumOfTargets; //  Количество целей, появляющихся на уровне
-    private int pointsPerLayer;
-    public int percentToShowPict = 90;
+    private int m_pointsPerLayer;
+    public int PercentToShowPict = 90;//Процент очков необходимый для показа полной картинки
 
     // Start is called before the first frame update
     void Start()
     {
-        time = Time.time;
+        m_time = Time.time;
         if (lc == null)
             lc = this.gameObject.GetComponent<LevelController>();
         Background = GameObject.Find("Background");
         // int x = Background.transform.childCount;
-        this.life_points = Max_Life;
-        hp_slider.value = this.life_points;
+        this.m_lifePoints = MaxLife;
+        HpSlider.value = this.m_lifePoints;
         
         GameObject songObject = GameObject.Find("Song");
         song = songObject.GetComponent<AudioSource>();
@@ -60,9 +60,9 @@ public class LevelController : MonoBehaviour
         Debug.Log(this.song.clip.length);
         NumOfTargets = (int)this.song.clip.length * 60/ (int)bpm;
         
-        MaxPoints = NumOfTargets * Target.maxScore;
-        pointsPerLayer = (MaxPoints * percentToShowPict / 100) / this.layers.Length;
-        score_slider.maxValue = MaxPoints;
+        MaxPoints = NumOfTargets * Target.MaxScore;
+        m_pointsPerLayer = (MaxPoints * PercentToShowPict / 100) / this.layers.Length;
+        ScoreSlider.maxValue = MaxPoints;
     }
     //IEnumerator GetAudioClip()
     //{
@@ -83,15 +83,15 @@ public class LevelController : MonoBehaviour
     void Update()
     {
         float cur_time = Time.time;
-        if(life_points <= 0)
+        if(m_lifePoints <= 0)
         {
             SceneManager.LoadScene("TrackChooseMenu");
         }
-        if(cur_time - time > 60/bpm)
+        if(cur_time - m_time > 60/bpm)
         {
-            time = cur_time;
+            m_time = cur_time;
             Vector3 pos = this.transform.position; 
-            Instantiate(target, GeneratePosition(), new Quaternion(0,0,0,0));
+            Instantiate(RoundTarget, GeneratePosition(), new Quaternion(0,0,0,0));
             increaseLife();
         }
         if(Input.touchCount > 0)
@@ -99,9 +99,9 @@ public class LevelController : MonoBehaviour
             Touch touch = Input.GetTouch(0);
             if (touch.phase == TouchPhase.Ended)
             {
-                if (!super_touch)
+                if (!SuperTouch)
                     decreaseLIfe();
-                super_touch = false;
+                SuperTouch = false;
             }
         }
         if (!this.song.isPlaying)
@@ -129,7 +129,7 @@ public class LevelController : MonoBehaviour
         {
             Score.text = this.Score.ToString();
         }*/
-        if (this.Score / this.pointsPerLayer > layer_number - 1)
+        if (this.Score / this.m_pointsPerLayer > layer_number - 1)
         {
             layer_number++;
             //string new_layer = name_template + layer_number.ToString() + format;
@@ -139,17 +139,17 @@ public class LevelController : MonoBehaviour
             BackImage.GetComponent<SpriteRenderer>().sprite = Sprite.Create(tex, new Rect(0.0f, 0.0f, tex.width, tex.height), new Vector2(0.5f, 0.5f), 100.0f);
         }
 
-        score_slider.value = this.Score;
+        ScoreSlider.value = this.Score;
 
     }
     public void increaseLife()
     {
-        this.life_points += this.life_points * stake_life_increase;
-        hp_slider.value = this.life_points;
+        this.m_lifePoints += this.m_lifePoints * stake_life_increase;
+        HpSlider.value = this.m_lifePoints;
     }
     public void decreaseLIfe()
     {
-        this.life_points -= Max_Life * stake_life_decrease;
-        hp_slider.value = this.life_points;
+        this.m_lifePoints -= MaxLife * LifeDecrease;
+        HpSlider.value = this.m_lifePoints;
     }
 }
