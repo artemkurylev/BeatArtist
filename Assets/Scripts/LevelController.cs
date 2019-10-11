@@ -12,6 +12,7 @@ public class LevelController : MonoBehaviour
     /// </summary>
     public GameObject target; // Объект кружочка - цели
     public Texture2D[] layers; // Массив со слоями 
+    public bool Developer_Mode;
     // public Text Score;
     public const float Max_Life = 100; // Максимально возможный запас жизни игрока
     public static LevelController lc; // Собственно сам контроллер, чтобы к нему было легко получить доступ от остальных объектов

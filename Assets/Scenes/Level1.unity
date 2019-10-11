@@ -1508,7 +1508,10 @@ MonoBehaviour:
   - {fileID: 2800000, guid: e8deac7309a737e41954947bd041e950, type: 3}
   - {fileID: 2800000, guid: c69b7f89cd4f91343833bed0e8cbd33f, type: 3}
   - {fileID: 2800000, guid: e0ce9cd68e1970340abcd95a2d41cfa4, type: 3}
+  Developer_Mode: 0
   Score: 0
+  FinalScore: {fileID: 0}
+  LoseCanvas: {fileID: 0}
   score_slider: {fileID: 1954991880}
   hp_slider: {fileID: 66265387}
   bpm: 65.4
@@ -1640,6 +1643,16 @@ PrefabInstance:
       propertyPath: m_Name
       value: LevelController
       objectReference: {fileID: 0}
+    - target: {fileID: 5115448796505737539, guid: 18364113a1f0d8a44bba1de66ec04f93,
+        type: 3}
+      propertyPath: score_slider
+      value: 
+      objectReference: {fileID: 1954991880}
+    - target: {fileID: 5115448796505737539, guid: 18364113a1f0d8a44bba1de66ec04f93,
+        type: 3}
+      propertyPath: hp_slider
+      value: 
+      objectReference: {fileID: 66265387}
     - target: {fileID: 5115448796505737538, guid: 18364113a1f0d8a44bba1de66ec04f93,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1695,15 +1708,5 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 5115448796505737539, guid: 18364113a1f0d8a44bba1de66ec04f93,
-        type: 3}
-      propertyPath: score_slider
-      value: 
-      objectReference: {fileID: 1954991880}
-    - target: {fileID: 5115448796505737539, guid: 18364113a1f0d8a44bba1de66ec04f93,
-        type: 3}
-      propertyPath: hp_slider
-      value: 
-      objectReference: {fileID: 66265387}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 18364113a1f0d8a44bba1de66ec04f93, type: 3}

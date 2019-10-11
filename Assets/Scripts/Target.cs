@@ -66,10 +66,14 @@ public class Target : MonoBehaviour
         LevelController.lc.updateScore(score);
     }
 
-    //public void OnMouseDown()
-    //{
-    //    Debug.Log("Click on object");
-    //    UpdateScore();
-    //    Destroy(this.gameObject);
-    //}
+    public void OnMouseDown()
+    {
+        if (LevelController.lc.Developer_Mode)
+        {
+            Debug.Log("Click on object");
+            UpdateScore();
+            Destroy(this.gameObject);
+        }
+        
+    }
 }
