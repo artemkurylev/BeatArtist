@@ -32,3 +32,4 @@ ExportedObj/
 *.exe
 .vs/BeatArtist/v16/Server/sqlite3/storage.ide-wal
 .vs/BeatArtist/v16/Server/sqlite3/storage.ide-shm
+.vs/BeatArtist/v16/Server/sqlite3/storage.ide
