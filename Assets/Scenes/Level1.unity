@@ -724,7 +724,7 @@ GameObject:
   - component: {fileID: 348573176}
   - component: {fileID: 348573175}
   m_Layer: 5
-  m_Name: LoseCanvas
+  m_Name: FinalCanvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1999,7 +1999,7 @@ MonoBehaviour:
   Developer_Mode: 1
   Score: 0
   FinalScore: {fileID: 1260131380}
-  LoseCanvas: {fileID: 348573174}
+  FinalCanvas: {fileID: 348573174}
   ScoreSlider: {fileID: 1954991880}
   HpSlider: {fileID: 66265387}
   bpm: 65.4

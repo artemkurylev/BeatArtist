@@ -19,7 +19,7 @@ public class LevelController : MonoBehaviour
     public float Score; // Текущее кол-во очков
     private float m_time;
     public Text FinalScore;
-    public GameObject LoseCanvas;
+    public GameObject FinalCanvas;
     private GameObject Background;
     private int layer_number = 1;
     public Slider ScoreSlider; // Слайдер для отображения очков игрока
@@ -86,10 +86,18 @@ public class LevelController : MonoBehaviour
         if (m_lifePoints <= 0)
         {
             //SceneManager.LoadScene("TrackChooseMenu");
-            LoseCanvas.SetActive(true);
+            FinalCanvas.SetActive(true);
             int finalScore = (int)this.Score;
             FinalScore.text = "Your final score is: " + finalScore.ToString() + "of " + lc.MaxPoints;
             song.Stop();
+        }
+        else if (!this.song.isPlaying)
+        {
+            int score = (int)this.Score;
+            FinalScore.text = " Your final score:\n" + score.ToString() + " of " + this.MaxPoints.ToString();
+                // End Level
+            FinalCanvas.SetActive(true);
+
         }
         else
         {
@@ -110,15 +118,7 @@ public class LevelController : MonoBehaviour
                     SuperTouch = false;
                 }
             }
-            if (!this.song.isPlaying)
-            {
-                int score = (int)this.Score;
-
-                FinalScore.text = " Your final score:\n" + score.ToString() + " of " + this.MaxPoints.ToString();
-                // End Level
-                GameObject.Find("FinalCanvas").SetActive(true);
-
-            }
+            
         }
     }
     private Vector3 GeneratePosition()
