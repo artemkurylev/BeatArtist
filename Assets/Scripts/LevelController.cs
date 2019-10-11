@@ -83,35 +83,41 @@ public class LevelController : MonoBehaviour
     void Update()
     {
         float cur_time = Time.time;
-        if(m_lifePoints <= 0)
+        if (m_lifePoints <= 0)
         {
-            SceneManager.LoadScene("TrackChooseMenu");
+            //SceneManager.LoadScene("TrackChooseMenu");
+            LoseCanvas.SetActive(true);
+            int finalScore = (int)this.Score;
+            FinalScore.text = "Your final score is: " + finalScore.ToString() + "of " + lc.MaxPoints;
         }
-        if(cur_time - m_time > 60/bpm)
+        else
         {
-            m_time = cur_time;
-            Vector3 pos = this.transform.position; 
-            Instantiate(RoundTarget, GeneratePosition(), new Quaternion(0,0,0,0));
-            increaseLife();
-        }
-        if(Input.touchCount > 0)
-        {
-            Touch touch = Input.GetTouch(0);
-            if (touch.phase == TouchPhase.Ended)
+            if (cur_time - m_time > 60 / bpm)
             {
-                if (!SuperTouch)
-                    decreaseLIfe();
-                SuperTouch = false;
+                m_time = cur_time;
+                Vector3 pos = this.transform.position;
+                Instantiate(RoundTarget, GeneratePosition(), new Quaternion(0, 0, 0, 0));
+                increaseLife();
             }
-        }
-        if (!this.song.isPlaying)
-        {
-            int score = (int)this.Score;
+            if (Input.touchCount > 0)
+            {
+                Touch touch = Input.GetTouch(0);
+                if (touch.phase == TouchPhase.Ended)
+                {
+                    if (!SuperTouch)
+                        decreaseLIfe();
+                    SuperTouch = false;
+                }
+            }
+            if (!this.song.isPlaying)
+            {
+                int score = (int)this.Score;
 
-            FinalScore.text = " Your final score:\n" + score.ToString() + " of " + this.MaxPoints.ToString(); 
-            // End Level
-            GameObject.Find("FinalCanvas").SetActive(true);
+                FinalScore.text = " Your final score:\n" + score.ToString() + " of " + this.MaxPoints.ToString();
+                // End Level
+                GameObject.Find("FinalCanvas").SetActive(true);
 
+            }
         }
     }
     private Vector3 GeneratePosition()
