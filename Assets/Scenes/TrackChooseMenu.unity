@@ -1050,7 +1050,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 0.64705884, b: 0, a: 1}
+  m_Color: {r: 0.54509807, g: 0.3882353, b: 0.6509804, a: 1}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -1931,17 +1931,22 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 3862303009063982519, guid: 1c50ec863f7455941bb6710b4de2a3bc,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 11459924, guid: 1c50ec863f7455941bb6710b4de2a3bc, type: 3}
       propertyPath: m_Color.r
-      value: 0
+      value: 0.4745098
       objectReference: {fileID: 0}
     - target: {fileID: 11459924, guid: 1c50ec863f7455941bb6710b4de2a3bc, type: 3}
       propertyPath: m_Color.g
-      value: 0.5803922
+      value: 0.6039216
       objectReference: {fileID: 0}
     - target: {fileID: 11459924, guid: 1c50ec863f7455941bb6710b4de2a3bc, type: 3}
       propertyPath: m_Color.b
-      value: 0.5254902
+      value: 0.8784314
       objectReference: {fileID: 0}
     - target: {fileID: 11459924, guid: 1c50ec863f7455941bb6710b4de2a3bc, type: 3}
       propertyPath: m_Color.a
@@ -1949,11 +1954,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 11459928, guid: 1c50ec863f7455941bb6710b4de2a3bc, type: 3}
       propertyPath: m_ShowMaskGraphic
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3862303009063982519, guid: 1c50ec863f7455941bb6710b4de2a3bc,
-        type: 3}
-      propertyPath: m_RootOrder
       value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -3082,7 +3082,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0.5803922, b: 0.5254902, a: 0}
+  m_Color: {r: 0.47843137, g: 0.7294118, b: 0.9490196, a: 0.5882353}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -5325,7 +5325,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 0.64705884, b: 0, a: 1}
+  m_Color: {r: 0.54509807, g: 0.3882353, b: 0.6509804, a: 1}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -5662,7 +5662,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0.5882353, b: 0.53333336, a: 0.39215687}
+  m_Color: {r: 0.49411765, g: 0.80784315, b: 0.99215686, a: 0.5882353}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -7132,7 +7132,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0.5882353, b: 0.53333336, a: 0.39215687}
+  m_Color: {r: 0.34901962, g: 0.84705883, b: 0.9019608, a: 0.5882353}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -7543,15 +7543,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 11429210, guid: b95be68355f9c2440be3969316a2e27b, type: 3}
       propertyPath: m_Color.r
-      value: 0
+      value: 0.4745098
       objectReference: {fileID: 0}
     - target: {fileID: 11429210, guid: b95be68355f9c2440be3969316a2e27b, type: 3}
       propertyPath: m_Color.g
-      value: 0.5803922
+      value: 0.6039216
       objectReference: {fileID: 0}
     - target: {fileID: 11429210, guid: b95be68355f9c2440be3969316a2e27b, type: 3}
       propertyPath: m_Color.b
-      value: 0.5254902
+      value: 0.8784314
       objectReference: {fileID: 0}
     - target: {fileID: 11429214, guid: b95be68355f9c2440be3969316a2e27b, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
@@ -7719,7 +7719,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0.5882353, b: 0.53333336, a: 0.5882353}
+  m_Color: {r: 0.47843137, g: 0.7294118, b: 0.9490196, a: 0.5882353}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
