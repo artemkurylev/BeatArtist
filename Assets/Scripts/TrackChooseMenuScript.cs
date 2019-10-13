@@ -1,17 +1,17 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using TrackSelection;
 using Resources;
-using System;
 
 public class TrackChooseMenuScript : MonoBehaviour
 {
+    public RawImage MenuBackground;
+    public Animator Animator;
+
     private SelectedTrack SelectedTrack = SelectedTrack.GetInstance();
     private ResourceLoader ResourceLoader = new ResourceLoader();
-    public RawImage MenuBackground;
+
 
     public void OnClickBack()
     {
@@ -19,20 +19,22 @@ public class TrackChooseMenuScript : MonoBehaviour
         SceneManager.LoadScene(MainMenu);
     }
 
+
     public void OnClickTrack(int trackId)
     {
         SelectedTrack.SetId(trackId);
-        // MenuBackground.texture = ResourceLoader.GetMenuTrackBackground(trackId);
         StartCoroutine(ResourceLoader.GetMenuTrackBackground(trackId, MenuBackground));
-        Debug.Log(MenuBackground.texture);
     }
+
 
     public void OnClickPlay()
     {
-        int ChosenTrack = SelectedTrack.GetId();
-        if (ChosenTrack >= 0)
+        int chosenTrack = SelectedTrack.GetId();
+        if (chosenTrack > 0)
         {
-            SceneManager.LoadScene(ChosenTrack);
+            LevelChanger.Instance.SetAnimatorPermanently(Animator);
+            SelectedTrack.SetId(0);
+            LevelChanger.Instance.FadeToLevel(chosenTrack);
         }
     }
 }
