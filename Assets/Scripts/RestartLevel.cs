@@ -18,7 +18,7 @@ public class RestartLevel : MonoBehaviour
     }
     public void restartLevel()
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        LevelChanger.Instance.FadeToScene(SceneManager.GetActiveScene().name);
     }
     private void OnMouseDown()
     {

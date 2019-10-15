@@ -17,6 +17,6 @@ public class LoadMenu : MonoBehaviour
     }
     public void OpenMenu()
     {
-        SceneManager.LoadScene("TrackChooseMenu");
+        LevelChanger.Instance.FadeToScene("TrackChooseMenu");
     }
 }

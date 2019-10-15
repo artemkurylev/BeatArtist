@@ -7,7 +7,6 @@ using Resources;
 public class TrackChooseMenuScript : MonoBehaviour
 {
     public RawImage MenuBackground;
-    public Animator Animator;
 
     private SelectedTrack SelectedTrack = SelectedTrack.GetInstance();
     private ResourceLoader ResourceLoader = new ResourceLoader();
@@ -32,7 +31,6 @@ public class TrackChooseMenuScript : MonoBehaviour
         int chosenTrack = SelectedTrack.GetId();
         if (chosenTrack > 0)
         {
-            LevelChanger.Instance.SetAnimatorPermanently(Animator);
             SelectedTrack.SetId(0);
             LevelChanger.Instance.FadeToLevel(chosenTrack);
         }
