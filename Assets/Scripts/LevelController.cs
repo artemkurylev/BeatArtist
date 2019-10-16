@@ -20,7 +20,6 @@ public class LevelController : MonoBehaviour
     private float m_time;
     public Text FinalScore;
     public GameObject FinalCanvas;
-    private GameObject Background;
     private int layer_number = 1;
     public Slider ScoreSlider; // Слайдер для отображения очков игрока
     public Slider HpSlider; // Слайдер для отображения жизней игрока
@@ -45,8 +44,6 @@ public class LevelController : MonoBehaviour
         m_time = Time.time;
         if (lc == null)
             lc = this.gameObject.GetComponent<LevelController>();
-        Background = GameObject.Find("Background");
-        // int x = Background.transform.childCount;
         this.m_lifePoints = MaxLife;
         HpSlider.value = this.m_lifePoints;
         
