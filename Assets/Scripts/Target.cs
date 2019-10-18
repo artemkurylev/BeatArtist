@@ -9,6 +9,8 @@ public class Target : MonoBehaviour
     private float m_time;
     public static int MaxScore = 500;
     public static int MinScore = 50;
+    public float step;
+    Color _color;
     
     // Start is called before the first frame update
     void Start()
@@ -19,6 +21,8 @@ public class Target : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+       smoothAppearance();
+        
         if (Input.touchCount > 0)
         {
             Touch touch = Input.GetTouch(0);
@@ -76,4 +80,14 @@ public class Target : MonoBehaviour
         }
         
     }
+    
+     //smooth appearance
+    void smoothAppearance(){
+        _color = gameObject.GetComponent<Renderer>().material.color;
+        if (_color.a < 255){
+            _color.a += step/100;
+            Debug.Log(_color.a);
+           gameObject.GetComponent<Renderer>().material.color = _color;
+        }
+    }    
 }
