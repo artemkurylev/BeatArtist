@@ -20,7 +20,6 @@ public class LevelController : MonoBehaviour
     private float m_time;
     public Text FinalScore;
     public GameObject FinalCanvas;
-    private GameObject Background;
     private int layer_number = 1;
     public Slider ScoreSlider; // Слайдер для отображения очков игрока
     public Slider HpSlider; // Слайдер для отображения жизней игрока
@@ -38,25 +37,26 @@ public class LevelController : MonoBehaviour
     private int NumOfTargets; //  Количество целей, появляющихся на уровне
     private int m_pointsPerLayer;
     public int PercentToShowPict = 90;//Процент очков необходимый для показа полной картинки
-
+    private bool m_appearFlag = false;
     // Start is called before the first frame update
     void Start()
     {
         m_time = Time.time;
         if (lc == null)
             lc = this.gameObject.GetComponent<LevelController>();
-        Background = GameObject.Find("Background");
-        // int x = Background.transform.childCount;
         this.m_lifePoints = MaxLife;
         HpSlider.value = this.m_lifePoints;
         
         GameObject songObject = GameObject.Find("Song");
         song = songObject.GetComponent<AudioSource>();
-        
-        
+
+
         //StartCoroutine(GetAudioClip());
         if (song.clip != null && song.clip.loadState == AudioDataLoadState.Loaded)
+        {
             song.Play();
+            m_time = song.time;
+        }
         Debug.Log(this.song.clip.length);
         NumOfTargets = (int)this.song.clip.length * 60/ (int)bpm;
         
@@ -82,13 +82,13 @@ public class LevelController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        float cur_time = Time.time;
+        float cur_time = song.time;
         if (m_lifePoints <= 0)
         {
             //SceneManager.LoadScene("TrackChooseMenu");
             FinalCanvas.SetActive(true);
             int finalScore = (int)this.Score;
-            FinalScore.text = "Your final score is: " + finalScore.ToString() + "of " + lc.MaxPoints;
+            FinalScore.text = "Your final score is: " + finalScore.ToString() + " of " + lc.MaxPoints;
             song.Stop();
         }
         else if (!this.song.isPlaying)
@@ -100,11 +100,21 @@ public class LevelController : MonoBehaviour
         }
         else
         {
-            if (cur_time - m_time > 60 / bpm)
+            if (!m_appearFlag && (cur_time - m_time > 4 * 60 / bpm))
+            {
+                m_appearFlag = true;
+                m_time = cur_time;
+                Vector3 pos = this.transform.position;
+                Instantiate(RoundTarget, GeneratePosition(), new Quaternion(0, 0, 0, 0));
+                Debug.Log(song.timeSamples);
+                increaseLife();
+            }
+            if (cur_time - m_time > 60 / bpm && m_appearFlag)
             {
                 m_time = cur_time;
                 Vector3 pos = this.transform.position;
                 Instantiate(RoundTarget, GeneratePosition(), new Quaternion(0, 0, 0, 0));
+                Debug.Log(song.timeSamples);
                 increaseLife();
             }
             if (Input.touchCount > 0)
