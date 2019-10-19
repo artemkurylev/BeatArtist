@@ -13,13 +13,16 @@ namespace Resources
 
         public IEnumerator GetMenuTrackBackground(int trackId, RawImage response)
         {
-            Debug.Log("kek1");
             string progress = GetTrackBackgroundProgress(trackId);
-            string path = Application.dataPath + "/Resources/track-" + trackId + "-" + progress + ".png";
+            string path = Application.dataPath;
+            // string path = Application.dataPath + "/Resources/track-" + trackId + "-" + progress + ".png
+            if (trackId == 1)
+            {
+                path = Application.dataPath + "/Resources/art_43/layer2.png";
+            }
+
             string url = "file:///" + path;
-
             var request = UnityWebRequestTexture.GetTexture(url);
-
             yield return request.SendWebRequest();
 
             Debug.Log(url);
