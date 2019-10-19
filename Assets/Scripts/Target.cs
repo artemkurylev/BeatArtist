@@ -48,11 +48,6 @@ public class Target : MonoBehaviour
                     UpdateScore();
                     LevelController.lc.SuperTouch = true;
                 }
-                else
-                {
-
-                    //LevelController.lc.decreaseLIfe();
-                }
             }
 
         }
