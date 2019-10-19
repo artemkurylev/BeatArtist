@@ -84,7 +84,7 @@ public class Target : MonoBehaviour
      //smooth appearance
     void smoothAppearance(){
         _color = gameObject.GetComponent<Renderer>().material.color;
-        if (_color.a < 255){
+        if (_color.a < 4.5f){
             _color.a += step/100;
             Debug.Log(_color.a);
            gameObject.GetComponent<Renderer>().material.color = _color;
