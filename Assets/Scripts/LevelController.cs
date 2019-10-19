@@ -88,7 +88,7 @@ public class LevelController : MonoBehaviour
             //SceneManager.LoadScene("TrackChooseMenu");
             FinalCanvas.SetActive(true);
             int finalScore = (int)this.Score;
-            FinalScore.text = "Your final score is: " + finalScore.ToString() + "of " + lc.MaxPoints;
+            FinalScore.text = "Your final score is: " + finalScore.ToString() + " of " + lc.MaxPoints;
             song.Stop();
         }
         else if (!this.song.isPlaying)
