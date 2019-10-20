@@ -21,10 +21,11 @@ public class Target : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-       smoothAppearance();
+        smoothAppearance();
         
         if (Input.touchCount > 0)
         {
+            Debug.Log("Touch");
             Touch touch = Input.GetTouch(0);
             if (touch.phase == TouchPhase.Began)
             {
@@ -43,10 +44,13 @@ public class Target : MonoBehaviour
                 float distance = Vector2.Distance(touch_position, this_position);
                 if (distance < 0.8)
                 {
-                    Debug.Log("Click on object");
+                    Debug.Log("Click on object by dist");
                     Destroy(this.gameObject);
                     UpdateScore();
-                    LevelController.lc.SuperTouch = true;
+                }else {
+                    Debug.Log("Miss on object by dist");
+                    Destroy(this.gameObject);
+                    LevelController.lc.decreaseLIfe();
                 }
             }
 
@@ -81,7 +85,6 @@ public class Target : MonoBehaviour
         _color = gameObject.GetComponent<Renderer>().material.color;
         if (_color.a < 4.5f){
             _color.a += step/100;
-            Debug.Log(_color.a);
            gameObject.GetComponent<Renderer>().material.color = _color;
         }
     }    
