@@ -11,7 +11,7 @@ public class LevelController : MonoBehaviour
     /// <summary>
     /// Блок с переменными
     /// </summary>
-    public GameObject RoundTarget; // Объект кружочка - цели
+    public GameObject[] RoundTargets; // Объект кружочка - цели
     public Texture2D[] layers; // Массив со слоями 
     public bool Developer_Mode;
     // public Text Score;
@@ -106,7 +106,7 @@ public class LevelController : MonoBehaviour
                 m_appearFlag = true;
                 m_time = cur_time;
                 Vector3 pos = this.transform.position;
-                Instantiate(RoundTarget, GeneratePosition(), new Quaternion(0, 0, 0, 0));
+                Instantiate(RoundTargets[Random.Range(0, RoundTargets.Length)], GeneratePosition(), new Quaternion(0, 0, 0, 0));
                 Debug.Log(song.timeSamples);
                 increaseLife();
             }
@@ -114,7 +114,7 @@ public class LevelController : MonoBehaviour
             {
                 m_time = cur_time;
                 Vector3 pos = this.transform.position;
-                Instantiate(RoundTarget, GeneratePosition(), new Quaternion(0, 0, 0, 0));
+                Instantiate(RoundTargets[Random.Range(0, RoundTargets.Length)], GeneratePosition(), new Quaternion(0, 0, 0, 0));
                 Debug.Log(song.timeSamples);
                 increaseLife();
             }

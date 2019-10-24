@@ -2502,8 +2502,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 57283ba03c4f62e48ab06d93d88f3ae2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  RoundTarget: {fileID: 7687145594891072768, guid: f942e5654d4de014f8852d0ee1c66745,
-    type: 3}
+  RoundTargets:
+  - {fileID: 7687145594891072768, guid: f33d361cea13e2d41a6183e09c485b0e, type: 3}
+  - {fileID: 7687145594891072768, guid: defce938188dc9b48bdd16bfbf0beb2a, type: 3}
+  - {fileID: 7687145594891072768, guid: 71a67d2d9d695674ebd732d7c727d06e, type: 3}
+  - {fileID: 7687145594891072768, guid: 6f3b80b97e0b21345badba796a261c66, type: 3}
+  - {fileID: 7687145594891072768, guid: e8cfcfd5ab43a694c8e060ad1f9e5b1c, type: 3}
+  - {fileID: 7687145594891072768, guid: 1891f22f90efbb545afc8da418d65db0, type: 3}
+  - {fileID: 7687145594891072768, guid: f942e5654d4de014f8852d0ee1c66745, type: 3}
   layers:
   - {fileID: 0}
   - {fileID: 2800000, guid: 797bae67d4c8de1469c33e3131b056ac, type: 3}
@@ -2812,6 +2818,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: LevelController
+      objectReference: {fileID: 0}
+    - target: {fileID: 5115448796505737539, guid: 18364113a1f0d8a44bba1de66ec04f93,
+        type: 3}
+      propertyPath: RoundTargets.Array.size
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 5115448796505737539, guid: 18364113a1f0d8a44bba1de66ec04f93,
         type: 3}
