@@ -69,7 +69,7 @@ public class TrackChooseMenuScript : MonoBehaviour
     public void OnClickPlay()
     {
         int chosenTrack = SelectedTrack.GetId();
-        if (chosenTrack > 0)
+        if (chosenTrack > 0 && chosenTrack == 1)
         {
             SelectedTrack.SetId(0);
             LevelChanger.Instance.FadeToLevel(chosenTrack);
