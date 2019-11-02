@@ -7,6 +7,8 @@ using System;
 
 namespace Resources
 {
+    
+    
     public class ResourceLoader
     {
         public ResourceLoader() { }
@@ -14,14 +16,14 @@ namespace Resources
         public IEnumerator GetMenuTrackBackground(int trackId, RawImage response)
         {
             string progress = GetTrackBackgroundProgress(trackId);
-            string path = Application.dataPath;
+            string path = Application.persistentDataPath;
             // string path = Application.dataPath + "/Resources/track-" + trackId + "-" + progress + ".png
             if (trackId == 1)
             {
-                path = Application.dataPath + "/Resources/art_43/layer2.png";
+                path = Application.persistentDataPath + "/Resources/art_43/layer2.png";
             }
 
-            string url = "file:///" + path;
+            string url = "file://" + path;
             var request = UnityWebRequestTexture.GetTexture(url);
             yield return request.SendWebRequest();
 

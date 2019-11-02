@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
@@ -11,9 +12,8 @@ public class LevelController : MonoBehaviour
     /// <summary>
     /// Блок с переменными
     /// </summary>
-    public GameObject[] RoundTargets; // Объект кружочка - цели
-    public Texture2D[] layers; // Массив со слоями 
-    public bool Developer_Mode;
+    public Target[] RoundTargets; // Объект кружочка - цели
+    public Texture2D[] layers; // Массив со слоями
     // public Text Score;
     public const float MaxLife = 100; // Максимально возможный запас жизни игрока
     public static LevelController lc; // Собственно сам контроллер, чтобы к нему было легко получить доступ от остальных объектов
@@ -39,9 +39,13 @@ public class LevelController : MonoBehaviour
     private int m_pointsPerLayer;
     public int PercentToShowPict = 90;//Процент очков необходимый для показа полной картинки
     private bool m_appearFlag = false;
+    private int targetCounter = 0;
     // Start is called before the first frame update
     void Start()
     {
+        Debug.Log(Globals.DeveloperMode);
+        Debug.Log(Application.platform);
+        Globals.nextClickableTarget = 0; // Инициализируем глобальные переменные
         m_time = Time.time;
         if (lc == null)
             lc = this.gameObject.GetComponent<LevelController>();
@@ -106,7 +110,9 @@ public class LevelController : MonoBehaviour
                 m_appearFlag = true;
                 m_time = cur_time;
                 Vector3 pos = this.transform.position;
-                Instantiate(RoundTargets[Random.Range(0, RoundTargets.Length)], GeneratePosition(), new Quaternion(0, 0, 0, 0));
+                Target target = Instantiate(RoundTargets[Random.Range(0, RoundTargets.Length)], GeneratePosition(), new Quaternion(0, 0, 0, 0));
+                target.currentNumber = targetCounter;
+                targetCounter++;
                 Debug.Log(song.timeSamples);
                 increaseLife();
             }
@@ -114,7 +120,9 @@ public class LevelController : MonoBehaviour
             {
                 m_time = cur_time;
                 Vector3 pos = this.transform.position;
-                Instantiate(RoundTargets[Random.Range(0, RoundTargets.Length)], GeneratePosition(), new Quaternion(0, 0, 0, 0));
+                Target target = Instantiate(RoundTargets[Random.Range(0, RoundTargets.Length)], GeneratePosition(), new Quaternion(0, 0, 0, 0));
+                target.currentNumber = targetCounter;
+                targetCounter++;
                 Debug.Log(song.timeSamples);
                 increaseLife();
             }
