@@ -31,7 +31,6 @@ public class Target : MonoBehaviour
             // Блок, обрабатывающий тапы на экран
             if (Input.touchCount > 0)
             {
-                Debug.Log("Touch");
                 Touch touch = Input.GetTouch(0);
                 if (touch.phase == TouchPhase.Began)
                 {
@@ -52,8 +51,6 @@ public class Target : MonoBehaviour
                     {
                         Miss();
                     }
-                    Debug.Log(currentNumber);
-                    Debug.Log(Globals.nextClickableTarget);
                     Destroy(this.gameObject);
                     Globals.nextClickableTarget++;
                 }
@@ -62,7 +59,6 @@ public class Target : MonoBehaviour
             // Блок, обрабатывающий нажатия мыши (для дебага)
             if (Globals.DeveloperMode && Input.GetMouseButtonDown(0))
             {
-                Debug.Log("Click");
                 Vector2 click_position = Input.mousePosition;
                 
                 int height = Screen.height;
@@ -81,8 +77,6 @@ public class Target : MonoBehaviour
                 {
                     Miss();
                 }
-                Debug.Log(currentNumber);
-                Debug.Log(Globals.nextClickableTarget);
                 Destroy(this.gameObject);
                 Globals.nextClickableTarget++;
             }
@@ -90,7 +84,6 @@ public class Target : MonoBehaviour
         
         if (Time.time - m_time > LifeTime)
         {
-            Debug.Log("Time ended");
             Destroy(this.gameObject);
             LevelController.lc.decreaseLIfe();
             Globals.nextClickableTarget++;
@@ -114,14 +107,12 @@ public class Target : MonoBehaviour
 
     private void Hit()
     {
-        Debug.Log("Hit on object by dist");
         UpdateScore();
         Globals.lastUpdateTime = Time.time;
     }
     
     private void Miss()
     {
-        Debug.Log("Miss on object by dist");
         LevelController.lc.decreaseLIfe();
         Globals.lastUpdateTime = Time.time;
     }

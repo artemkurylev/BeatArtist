@@ -18,26 +18,28 @@ public class LevelController : MonoBehaviour
     public const float MaxLife = 100; // Максимально возможный запас жизни игрока
     public static LevelController lc; // Собственно сам контроллер, чтобы к нему было легко получить доступ от остальных объектов
     public float Score; // Текущее кол-во очков
-    private float m_time;
     public Text FinalScore;
     public GameObject FinalCanvas;
-    private int layer_number = 1;
     public Slider ScoreSlider; // Слайдер для отображения очков игрока
     public Slider HpSlider; // Слайдер для отображения жизней игрока
-    private float m_lifePoints; // Текущее кол-во очков здоровья
-    public float bpm; // BPM трека 
     public static float SceneHeight = 10.0f; // Размеры сцены
     public static float SceneWidth = 5.6f;
     public float LifeDecrease = 0.2f; // Уменьшение жизни при промахе / исчезновении цели без попадания
     public const float stake_life_increase = 0.01f;
     public bool SuperTouch = false; // Нужна для определение, было ли касание по какой либо цели
     public AudioClip Clip; // Здесь хранится трек
+    public int PercentToShowPict = 90;//Процент очков необходимый для показа полной картинки
+    public float bpm = 120; // BPM трека 
+    public Animator animator; // Объект, отвественный за вызов анимаций уровня
+    
+    private float m_lifePoints; // Текущее кол-во очков здоровья
+    private float m_time;
+    private int layer_number = 1;
     private AudioSource song; // Здесь хранится трек
     //public string url; - пока не используется
     private int MaxPoints; // Максимальное кол-во очков для уровня
     private int NumOfTargets; //  Количество целей, появляющихся на уровне
     private int m_pointsPerLayer;
-    public int PercentToShowPict = 90;//Процент очков необходимый для показа полной картинки
     private bool m_appearFlag = false;
     private int targetCounter = 0;
     // Start is called before the first frame update
@@ -54,8 +56,12 @@ public class LevelController : MonoBehaviour
         
         GameObject songObject = GameObject.Find("Song");
         song = songObject.GetComponent<AudioSource>();
-
-
+        
+        // Инициализируем ритм-детектор
+        AudioProcessor processor = FindObjectOfType<AudioProcessor> ();
+        Debug.Log(song);
+        processor.onBeat.AddListener (OnBeatDetected);
+        
         //StartCoroutine(GetAudioClip());
         if (song.clip != null && song.clip.loadState == AudioDataLoadState.Loaded)
         {
@@ -64,7 +70,6 @@ public class LevelController : MonoBehaviour
         }
         Debug.Log(this.song.clip.length);
         NumOfTargets = (int)this.song.clip.length * 60/ (int)bpm;
-        
         MaxPoints = NumOfTargets * Target.MaxScore;
         m_pointsPerLayer = (MaxPoints * PercentToShowPict / 100) / this.layers.Length;
         ScoreSlider.maxValue = MaxPoints;
@@ -87,6 +92,7 @@ public class LevelController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        Debug.Log(song.isPlaying);
         float cur_time = song.time;
         if (m_lifePoints <= 0)
         {
@@ -113,7 +119,6 @@ public class LevelController : MonoBehaviour
                 Target target = Instantiate(RoundTargets[Random.Range(0, RoundTargets.Length)], GeneratePosition(), new Quaternion(0, 0, 0, 0));
                 target.currentNumber = targetCounter;
                 targetCounter++;
-                Debug.Log(song.timeSamples);
                 increaseLife();
             }
             if (cur_time - m_time > 60 / bpm && m_appearFlag)
@@ -123,7 +128,6 @@ public class LevelController : MonoBehaviour
                 Target target = Instantiate(RoundTargets[Random.Range(0, RoundTargets.Length)], GeneratePosition(), new Quaternion(0, 0, 0, 0));
                 target.currentNumber = targetCounter;
                 targetCounter++;
-                Debug.Log(song.timeSamples);
                 increaseLife();
             }
             if (Input.touchCount > 0)
@@ -159,7 +163,6 @@ public class LevelController : MonoBehaviour
             layer_number++;
             //string new_layer = name_template + layer_number.ToString() + format;
             Texture2D tex = layers[layer_number];
-            Debug.Log(layer_number);
             GameObject BackImage = GameObject.Find("BackImage");
             BackImage.GetComponent<Image>().sprite = Sprite.Create(tex, new Rect(0.0f, 0.0f, tex.width, tex.height), new Vector2(0.5f, 0.5f), 100.0f);
         }
@@ -176,5 +179,12 @@ public class LevelController : MonoBehaviour
     {
         this.m_lifePoints -= MaxLife * LifeDecrease;
         HpSlider.value = this.m_lifePoints;
+    }
+    
+    public void OnBeatDetected ()
+    {
+        Debug.Log ("Beat!!!");
+        animator.ResetTrigger("beat");
+        animator.SetTrigger("beat");
     }
 }
