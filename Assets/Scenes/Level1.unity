@@ -508,7 +508,6 @@ GameObject:
   m_Component:
   - component: {fileID: 249625112}
   - component: {fileID: 249625111}
-  - component: {fileID: 249625113}
   m_Layer: 0
   m_Name: Song
   m_TagString: Untagged
@@ -526,7 +525,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: d469f2cbb3f3edf46a5b4d44b3f6d0b8, type: 3}
+  m_audioClip: {fileID: 8300000, guid: 01e362be997451045b95a31773ab25b3, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
@@ -626,37 +625,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &249625113
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 249625110}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fb0ad0438e9aede4287b6a81e81c64a9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  bufferSize: 1024
-  gThresh: 0.5
-  onBeat:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 2099675274}
-        m_MethodName: OnBeatDetected
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  onSpectrum:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!1 &256878088
 GameObject:
   m_ObjectHideFlags: 0
@@ -2482,7 +2450,7 @@ MonoBehaviour:
   HpSlider: {fileID: 66265387}
   LifeDecrease: 0.2
   SuperTouch: 0
-  Clip: {fileID: 8300000, guid: d469f2cbb3f3edf46a5b4d44b3f6d0b8, type: 3}
+  Clip: {fileID: 8300000, guid: 01e362be997451045b95a31773ab25b3, type: 3}
   PercentToShowPict: 90
   bpm: 67
   animator: {fileID: 1733519804}

@@ -45,8 +45,6 @@ public class LevelController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        Debug.Log(Globals.DeveloperMode);
-        Debug.Log(Application.platform);
         Globals.nextClickableTarget = 0; // Инициализируем глобальные переменные
         m_time = Time.time;
         if (lc == null)
@@ -56,12 +54,7 @@ public class LevelController : MonoBehaviour
         
         GameObject songObject = GameObject.Find("Song");
         song = songObject.GetComponent<AudioSource>();
-        
-        // Инициализируем ритм-детектор
-        AudioProcessor processor = FindObjectOfType<AudioProcessor> ();
-        Debug.Log(song);
-        processor.onBeat.AddListener (OnBeatDetected);
-        
+
         //StartCoroutine(GetAudioClip());
         if (song.clip != null && song.clip.loadState == AudioDataLoadState.Loaded)
         {
@@ -179,12 +172,5 @@ public class LevelController : MonoBehaviour
     {
         this.m_lifePoints -= MaxLife * LifeDecrease;
         HpSlider.value = this.m_lifePoints;
-    }
-    
-    public void OnBeatDetected ()
-    {
-        Debug.Log ("Beat!!!");
-        animator.ResetTrigger("beat");
-        animator.SetTrigger("beat");
     }
 }
