@@ -2,13 +2,19 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class LevelChanger : Singleton<LevelChanger>
+public class LevelChanger : MonoBehaviour
 {
+    public static LevelChanger Instance;
     public Animator Animator;
     private String SceneToLoad;
 
+    public void Start()
+    {
+        if (Instance == null)
+            Instance = this.gameObject.GetComponent<LevelChanger>();
+    }
 
-    public void FadeToLevel(int chosenTrack)
+    public void FadeToLevel(String chosenTrack)
     {
         SceneToLoad = "Level" + chosenTrack.ToString();
         Animator.SetBool("Fade", true);

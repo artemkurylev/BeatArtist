@@ -8,17 +8,18 @@ using UnityEngine.EventSystems;
 public class Target : MonoBehaviour
 {
     public const float LifeTime = 2.0f;
-    private float m_time;
     public static int MaxScore = 500;
     public static int MinScore = 50;
     public float step;
     public int currentNumber = -1;
+    
+    private float creationTime;
     Color _color;
 
     // Start is called before the first frame update
     void Start()
     {
-        m_time = Time.time;
+        creationTime = Time.time;
     }
     
     // Update is called once per frame
@@ -59,6 +60,7 @@ public class Target : MonoBehaviour
             // Блок, обрабатывающий нажатия мыши (для дебага)
             if (Globals.DeveloperMode && Input.GetMouseButtonDown(0))
             {
+                Debug.Log("Clicked");
                 Vector2 click_position = Input.mousePosition;
                 
                 int height = Screen.height;
@@ -82,18 +84,24 @@ public class Target : MonoBehaviour
             }
         }
         
-        if (Time.time - m_time > LifeTime)
+        if (Time.time - creationTime > LifeTime)
         {
             Destroy(this.gameObject);
-            LevelController.lc.decreaseLIfe();
+            if (LevelController.lc)
+            {
+                LevelController.lc.decreaseLIfe();
+            }
             Globals.nextClickableTarget++;
         }
     }
     void UpdateScore()
     {
-        float clickTime = Time.time - m_time;
+        float clickTime = Time.time - creationTime;
         float score = (1 - clickTime / LifeTime) * MaxScore;
-        LevelController.lc.updateScore(score);
+        if (LevelController.lc)
+        {
+            LevelController.lc.updateScore(score);
+        }
     }
 
     //smooth appearance
@@ -113,7 +121,10 @@ public class Target : MonoBehaviour
     
     private void Miss()
     {
-        LevelController.lc.decreaseLIfe();
+        if (LevelController.lc)
+        {
+            LevelController.lc.decreaseLIfe();
+        }
         Globals.lastUpdateTime = Time.time;
     }
 }

@@ -14,10 +14,17 @@ public class TrackChooseMenuScript : MonoBehaviour
     private SelectedTrack SelectedTrack = SelectedTrack.GetInstance();
     private ResourceLoader ResourceLoader = new ResourceLoader();
     private Image PreviousHighlighted;
+    private GameObject Record;
 
 
     void Start()
     {
+        Record = GameObject.Find("/Canvas/Navigation bar/Record");
+        if (Record)
+        {
+            // Look how Developer Mode is defined! Currently, recording will not appear on an Android device due to it.
+            Record.SetActive(Globals.DeveloperMode);
+        }
         if (Controller)
         {
             Controller.OnClickTrack(1);
@@ -72,7 +79,17 @@ public class TrackChooseMenuScript : MonoBehaviour
         if (chosenTrack > 0 && chosenTrack == 1)
         {
             SelectedTrack.SetId(0);
-            LevelChanger.Instance.FadeToLevel(chosenTrack);
+            LevelChanger.Instance.FadeToLevel(chosenTrack.ToString());
+        }
+    }
+    
+    public void OnClickRecord()
+    {
+        int chosenTrack = SelectedTrack.GetId();
+        if (chosenTrack > 0 && chosenTrack == 1)
+        {
+            SelectedTrack.SetId(0);
+            LevelChanger.Instance.FadeToLevel(chosenTrack + "Record");
         }
     }
     
