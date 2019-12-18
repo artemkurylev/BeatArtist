@@ -6,6 +6,7 @@ public static class Globals
 {
     public static int nextClickableTarget = 0;
     public static float lastUpdateTime = 0;
+    public static float timeToResponse = 2; // Time to click on beat buttons
     
     // Минимальное расстояние во времени между двумя нажатиями на экран.
     // Не позволяет исчезнуть всем целям по одному нажатию.

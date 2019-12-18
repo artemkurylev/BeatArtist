@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using UnityEditor;
 using UnityEngine;
@@ -17,7 +18,6 @@ public class LevelController : MonoBehaviour
     // public Text Score;
     public const float MaxLife = 100; // Максимально возможный запас жизни игрока
     public static LevelController lc; // Собственно сам контроллер, чтобы к нему было легко получить доступ от остальных объектов
-    public float Score; // Текущее кол-во очков
     public Text FinalScore;
     public GameObject FinalCanvas;
     public Slider ScoreSlider; // Слайдер для отображения очков игрока
@@ -26,46 +26,50 @@ public class LevelController : MonoBehaviour
     public static float SceneWidth = 5.6f;
     public float LifeDecrease = 0.2f; // Уменьшение жизни при промахе / исчезновении цели без попадания
     public const float stake_life_increase = 0.01f;
-    public bool SuperTouch = false; // Нужна для определение, было ли касание по какой либо цели
-    public AudioClip Clip; // Здесь хранится трек
     public int PercentToShowPict = 90;//Процент очков необходимый для показа полной картинки
     public float bpm = 120; // BPM трека 
     public Animator animator; // Объект, отвественный за вызов анимаций уровня
+    public string GameDataFileName = "";
     
     private float m_lifePoints; // Текущее кол-во очков здоровья
-    private float m_time;
-    private int layer_number = 1;
-    private AudioSource song; // Здесь хранится трек
+    private float m_nextBeatExpiration;
+    private int m_layer_number = 1;
+    private AudioSource m_song; // Здесь хранится трек
     //public string url; - пока не используется
-    private int MaxPoints; // Максимальное кол-во очков для уровня
-    private int NumOfTargets; //  Количество целей, появляющихся на уровне
+    private float m_score; // Текущее кол-во очков
+    private int m_maxScore; // Максимальное кол-во очков для уровня
+    private int m_numOfTargets; //  Количество целей, появляющихся на уровне
     private int m_pointsPerLayer;
-    private bool m_appearFlag = false;
-    private int targetCounter = 0;
+    private int m_targetCounter = 0; // Counter for created beat buttons
+    private LevelData m_LevelData; // Level data such as array of beat buttons
     // Start is called before the first frame update
     void Start()
     {
+        if(!LoadGameData() || m_LevelData.buttons.Count == 0)
+        {
+            m_maxScore = 0;
+            EndLevel();
+        }
+        
         Globals.nextClickableTarget = 0; // Инициализируем глобальные переменные
-        m_time = Time.time;
+        m_nextBeatExpiration = m_LevelData.buttons[0].time;
         if (lc == null)
-            lc = this.gameObject.GetComponent<LevelController>();
-        this.m_lifePoints = MaxLife;
-        HpSlider.value = this.m_lifePoints;
+            lc = gameObject.GetComponent<LevelController>();
+        m_lifePoints = MaxLife;
+        HpSlider.value = m_lifePoints;
         
         GameObject songObject = GameObject.Find("Song");
-        song = songObject.GetComponent<AudioSource>();
+        m_song = songObject.GetComponent<AudioSource>();
 
         //StartCoroutine(GetAudioClip());
-        if (song.clip != null && song.clip.loadState == AudioDataLoadState.Loaded)
+        if (m_song.clip != null && m_song.clip.loadState == AudioDataLoadState.Loaded)
         {
-            song.Play();
-            m_time = song.time;
+            m_song.Play();
         }
-        Debug.Log(this.song.clip.length);
-        NumOfTargets = (int)this.song.clip.length * 60/ (int)bpm;
-        MaxPoints = NumOfTargets * Target.MaxScore;
-        m_pointsPerLayer = (MaxPoints * PercentToShowPict / 100) / this.layers.Length;
-        ScoreSlider.maxValue = MaxPoints;
+        m_numOfTargets = m_LevelData.buttons.Count;
+        m_maxScore = m_numOfTargets * Target.MaxScore;
+        m_pointsPerLayer = (m_maxScore * PercentToShowPict / 100) / layers.Length;
+        ScoreSlider.maxValue = m_maxScore;
     }
     //IEnumerator GetAudioClip()
     //{
@@ -82,95 +86,83 @@ public class LevelController : MonoBehaviour
     //        }
     //    }
     //}
-    // Update is called once per frame
     void Update()
     {
-        Debug.Log(song.isPlaying);
-        float cur_time = song.time;
-        if (m_lifePoints <= 0)
+        if (m_song)
         {
-            //SceneManager.LoadScene("TrackChooseMenu");
-            FinalCanvas.SetActive(true);
-            int finalScore = (int)this.Score;
-            FinalScore.text = "Your final score is: " + finalScore.ToString() + " of " + lc.MaxPoints;
-            song.Stop();
-        }
-        else if (!this.song.isPlaying)
-        {
-            int score = (int)this.Score;
-            FinalScore.text = " Your final score:\n" + score.ToString() + " of " + this.MaxPoints.ToString();
-                // End Level
-            FinalCanvas.SetActive(true);
-        }
-        else
-        {
-            if (!m_appearFlag && (cur_time - m_time > 4 * 60 / bpm))
+            float cur_time = m_song.time;
+            if (m_lifePoints <= 0 || Globals.nextClickableTarget >= m_LevelData.buttons.Count || !m_song.isPlaying)
             {
-                m_appearFlag = true;
-                m_time = cur_time;
-                Vector3 pos = this.transform.position;
-                Target target = Instantiate(RoundTargets[Random.Range(0, RoundTargets.Length)], GeneratePosition(), new Quaternion(0, 0, 0, 0));
-                target.currentNumber = targetCounter;
-                targetCounter++;
-                increaseLife();
+                EndLevel();
             }
-            if (cur_time - m_time > 60 / bpm && m_appearFlag)
+            else
             {
-                m_time = cur_time;
-                Vector3 pos = this.transform.position;
-                Target target = Instantiate(RoundTargets[Random.Range(0, RoundTargets.Length)], GeneratePosition(), new Quaternion(0, 0, 0, 0));
-                target.currentNumber = targetCounter;
-                targetCounter++;
-                increaseLife();
+                if (m_nextBeatExpiration - cur_time < Globals.timeToResponse && m_targetCounter < m_LevelData.buttons.Count)
+                {
+                    Target target = Instantiate(RoundTargets[Random.Range(0, RoundTargets.Length)], GetPosition(), 
+                        new Quaternion(0, 0, 0, 0));
+                    target.currentNumber = m_targetCounter;
+                    m_targetCounter++;
+                    if (m_targetCounter < m_LevelData.buttons.Count)
+                    {
+                        m_nextBeatExpiration = m_LevelData.buttons[m_targetCounter].time;
+                    }
+                }
             }
-            if (Input.touchCount > 0)
-            {
-                Touch touch = Input.GetTouch(0);
-                // if (touch.phase == TouchPhase.Ended)
-                // {
-                //     if (!SuperTouch)
-                //         decreaseLIfe();
-                //     SuperTouch = false;
-                // }
-            }
-            
         }
     }
-    private Vector3 GeneratePosition()
+
+    // Update is called once per frame
+    public void UpdateScore(float score)
     {
-        float x, y, z;
-        z = -1;
-        x = Random.Range(-1.9f, 1.9f);
-        y = Random.Range(-3.5f, 2.5f);
-        return new Vector3(x, y, z);
-    }
-    public void updateScore(float score)
-    {
-        this.Score += score;
-        /*f (Score != null)
+        m_score += score;
+        if (m_score / m_pointsPerLayer > m_layer_number - 1)
         {
-            Score.text = this.Score.ToString();
-        }*/
-        if (this.Score / this.m_pointsPerLayer > layer_number - 1)
-        {
-            layer_number++;
+            m_layer_number++;
             //string new_layer = name_template + layer_number.ToString() + format;
-            Texture2D tex = layers[layer_number];
+            Texture2D tex = layers[m_layer_number];
             GameObject BackImage = GameObject.Find("BackImage");
-            BackImage.GetComponent<Image>().sprite = Sprite.Create(tex, new Rect(0.0f, 0.0f, tex.width, tex.height), new Vector2(0.5f, 0.5f), 100.0f);
+            BackImage.GetComponent<Image>().sprite = Sprite.Create(tex, new Rect(0.0f, 0.0f, tex.width,
+                tex.height), new Vector2(0.5f, 0.5f), 100.0f);
         }
 
-        ScoreSlider.value = this.Score;
+        ScoreSlider.value = m_score;
 
     }
-    public void increaseLife()
+    public void DecreaseLife()
     {
-        this.m_lifePoints += this.m_lifePoints * stake_life_increase;
-        HpSlider.value = this.m_lifePoints;
+        m_lifePoints -= MaxLife * LifeDecrease;
+        HpSlider.value = m_lifePoints;
     }
-    public void decreaseLIfe()
+    public void IncreaseLife()
     {
-        this.m_lifePoints -= MaxLife * LifeDecrease;
-        HpSlider.value = this.m_lifePoints;
+        m_lifePoints += m_lifePoints * stake_life_increase;
+        HpSlider.value = m_lifePoints;
+    }
+    private Vector2 GetPosition()
+    {
+        return m_LevelData.buttons[m_targetCounter].points[0];
+    }
+    private void EndLevel()
+    {
+        FinalCanvas.SetActive(true);
+        int finalScore = (int) m_score;
+        FinalScore.text = "Your final score is: " + finalScore.ToString() + " of " + m_maxScore;
+        if (m_song) m_song.Stop();
+    }
+    private bool LoadGameData()
+    {
+        string filePath = Path.Combine(Application.streamingAssetsPath, GameDataFileName);
+
+        if (File.Exists(filePath))
+        {
+            string dataAsJson = File.ReadAllText(filePath);
+
+            m_LevelData = JsonUtility.FromJson<LevelData>(dataAsJson);
+
+            return true;
+        }
+
+        return false;
     }
 }

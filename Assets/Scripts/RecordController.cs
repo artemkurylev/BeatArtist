@@ -39,7 +39,7 @@ public class RecordController : MonoBehaviour
     private int m_pointsPerLayer;
     private bool m_appearFlag = false;
     private int targetCounter = 0;
-    private ButtonData buttonData = new ButtonData();
+    private LevelData _levelData = new LevelData();
     // Start is called before the first frame update
     void Start()
     {
@@ -92,7 +92,7 @@ public class RecordController : MonoBehaviour
         Instantiate(RoundTargets[Random.Range(0, RoundTargets.Length)], position, new Quaternion(0, 0, 0, 0));
 
         ButtonItem item = new ButtonItem {time = song.time, points = new[] {position}, isSlider = false};
-        buttonData.buttons.Add(item);
+        _levelData.buttons.Add(item);
     }
     
     private void FinishRecord()
@@ -101,7 +101,7 @@ public class RecordController : MonoBehaviour
         
         if (!string.IsNullOrEmpty(filePath))
         {
-            string dataAsJson = JsonUtility.ToJson(buttonData);
+            string dataAsJson = JsonUtility.ToJson(_levelData);
             File.WriteAllText(filePath, dataAsJson);
         }
         

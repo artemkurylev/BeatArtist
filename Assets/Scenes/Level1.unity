@@ -381,14 +381,44 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 4550075869826872375, guid: 8155e5ed255210b41bf6c77292db844a,
+    - target: {fileID: 4550075868175844721, guid: 8155e5ed255210b41bf6c77292db844a,
         type: 3}
       propertyPath: m_Name
-      value: Background
+      value: BackImage
       objectReference: {fileID: 0}
-    - target: {fileID: 4550075869826872375, guid: 8155e5ed255210b41bf6c77292db844a,
+    - target: {fileID: 4550075868175844750, guid: 8155e5ed255210b41bf6c77292db844a,
         type: 3}
-      propertyPath: m_IsActive
+      propertyPath: m_LocalScale.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4550075868175844750, guid: 8155e5ed255210b41bf6c77292db844a,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4550075868175844751, guid: 8155e5ed255210b41bf6c77292db844a,
+        type: 3}
+      propertyPath: m_DrawMode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4550075868175844751, guid: 8155e5ed255210b41bf6c77292db844a,
+        type: 3}
+      propertyPath: m_SpriteSortPoint
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4550075868175844751, guid: 8155e5ed255210b41bf6c77292db844a,
+        type: 3}
+      propertyPath: m_SpriteTileMode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4550075868175844751, guid: 8155e5ed255210b41bf6c77292db844a,
+        type: 3}
+      propertyPath: m_AdaptiveModeThreshold
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4550075868175844751, guid: 8155e5ed255210b41bf6c77292db844a,
+        type: 3}
+      propertyPath: m_MaskInteraction
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4550075869826872370, guid: 8155e5ed255210b41bf6c77292db844a,
@@ -446,56 +476,26 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 4550075868175844721, guid: 8155e5ed255210b41bf6c77292db844a,
-        type: 3}
-      propertyPath: m_Name
-      value: BackImage
-      objectReference: {fileID: 0}
-    - target: {fileID: 4550075868175844751, guid: 8155e5ed255210b41bf6c77292db844a,
-        type: 3}
-      propertyPath: m_DrawMode
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4550075868175844751, guid: 8155e5ed255210b41bf6c77292db844a,
-        type: 3}
-      propertyPath: m_SpriteSortPoint
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4550075868175844751, guid: 8155e5ed255210b41bf6c77292db844a,
-        type: 3}
-      propertyPath: m_SpriteTileMode
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4550075868175844751, guid: 8155e5ed255210b41bf6c77292db844a,
-        type: 3}
-      propertyPath: m_AdaptiveModeThreshold
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4550075868175844751, guid: 8155e5ed255210b41bf6c77292db844a,
-        type: 3}
-      propertyPath: m_MaskInteraction
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4550075868175844750, guid: 8155e5ed255210b41bf6c77292db844a,
-        type: 3}
-      propertyPath: m_LocalScale.x
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4550075868175844750, guid: 8155e5ed255210b41bf6c77292db844a,
-        type: 3}
-      propertyPath: m_LocalScale.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4550075869826872373, guid: 8155e5ed255210b41bf6c77292db844a,
-        type: 3}
-      propertyPath: m_Mesh
-      value: 
-      objectReference: {fileID: 10210, guid: 0000000000000000e000000000000000, type: 0}
     - target: {fileID: 4550075869826872372, guid: 8155e5ed255210b41bf6c77292db844a,
         type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+    - target: {fileID: 4550075869826872373, guid: 8155e5ed255210b41bf6c77292db844a,
+        type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 10210, guid: 0000000000000000e000000000000000, type: 0}
+    - target: {fileID: 4550075869826872375, guid: 8155e5ed255210b41bf6c77292db844a,
+        type: 3}
+      propertyPath: m_Name
+      value: Background
+      objectReference: {fileID: 0}
+    - target: {fileID: 4550075869826872375, guid: 8155e5ed255210b41bf6c77292db844a,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8155e5ed255210b41bf6c77292db844a, type: 3}
 --- !u!1 &249625110
@@ -2443,17 +2443,15 @@ MonoBehaviour:
   - {fileID: 2800000, guid: e8deac7309a737e41954947bd041e950, type: 3}
   - {fileID: 2800000, guid: c69b7f89cd4f91343833bed0e8cbd33f, type: 3}
   - {fileID: 2800000, guid: e0ce9cd68e1970340abcd95a2d41cfa4, type: 3}
-  Score: 0
   FinalScore: {fileID: 1260131380}
   FinalCanvas: {fileID: 348573174}
   ScoreSlider: {fileID: 1954991880}
   HpSlider: {fileID: 66265387}
   LifeDecrease: 0.2
-  SuperTouch: 0
-  Clip: {fileID: 8300000, guid: 01e362be997451045b95a31773ab25b3, type: 3}
   PercentToShowPict: 90
   bpm: 67
   animator: {fileID: 1733519804}
+  GameDataFileName: level1.json
 --- !u!4 &2099675275
 Transform:
   m_ObjectHideFlags: 0
@@ -2610,31 +2608,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: LevelController
       objectReference: {fileID: 0}
-    - target: {fileID: 5115448796505737539, guid: 18364113a1f0d8a44bba1de66ec04f93,
-        type: 3}
-      propertyPath: RoundTargets.Array.size
-      value: 7
-      objectReference: {fileID: 0}
-    - target: {fileID: 5115448796505737539, guid: 18364113a1f0d8a44bba1de66ec04f93,
-        type: 3}
-      propertyPath: score_slider
-      value: 
-      objectReference: {fileID: 1954991880}
-    - target: {fileID: 5115448796505737539, guid: 18364113a1f0d8a44bba1de66ec04f93,
-        type: 3}
-      propertyPath: hp_slider
-      value: 
-      objectReference: {fileID: 66265387}
-    - target: {fileID: 5115448796505737539, guid: 18364113a1f0d8a44bba1de66ec04f93,
-        type: 3}
-      propertyPath: Developer_Mode
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5115448796505737539, guid: 18364113a1f0d8a44bba1de66ec04f93,
-        type: 3}
-      propertyPath: bpm
-      value: 67
-      objectReference: {fileID: 0}
     - target: {fileID: 5115448796505737538, guid: 18364113a1f0d8a44bba1de66ec04f93,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -2689,6 +2662,36 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5115448796505737539, guid: 18364113a1f0d8a44bba1de66ec04f93,
+        type: 3}
+      propertyPath: RoundTargets.Array.size
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 5115448796505737539, guid: 18364113a1f0d8a44bba1de66ec04f93,
+        type: 3}
+      propertyPath: score_slider
+      value: 
+      objectReference: {fileID: 1954991880}
+    - target: {fileID: 5115448796505737539, guid: 18364113a1f0d8a44bba1de66ec04f93,
+        type: 3}
+      propertyPath: hp_slider
+      value: 
+      objectReference: {fileID: 66265387}
+    - target: {fileID: 5115448796505737539, guid: 18364113a1f0d8a44bba1de66ec04f93,
+        type: 3}
+      propertyPath: Developer_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5115448796505737539, guid: 18364113a1f0d8a44bba1de66ec04f93,
+        type: 3}
+      propertyPath: bpm
+      value: 67
+      objectReference: {fileID: 0}
+    - target: {fileID: 5115448796505737539, guid: 18364113a1f0d8a44bba1de66ec04f93,
+        type: 3}
+      propertyPath: GameDataFileName
+      value: level1.json
       objectReference: {fileID: 0}
     - target: {fileID: 5115448796505737541, guid: 18364113a1f0d8a44bba1de66ec04f93,
         type: 3}

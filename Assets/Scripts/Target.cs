@@ -89,7 +89,7 @@ public class Target : MonoBehaviour
             Destroy(this.gameObject);
             if (LevelController.lc)
             {
-                LevelController.lc.decreaseLIfe();
+                LevelController.lc.DecreaseLife();
             }
             Globals.nextClickableTarget++;
         }
@@ -97,10 +97,10 @@ public class Target : MonoBehaviour
     void UpdateScore()
     {
         float clickTime = Time.time - creationTime;
-        float score = (1 - clickTime / LifeTime) * MaxScore;
+        float score = (clickTime / LifeTime) * MaxScore;
         if (LevelController.lc)
         {
-            LevelController.lc.updateScore(score);
+            LevelController.lc.UpdateScore(score);
         }
     }
 
@@ -116,6 +116,10 @@ public class Target : MonoBehaviour
     private void Hit()
     {
         UpdateScore();
+        if (LevelController.lc)
+        {
+            LevelController.lc.IncreaseLife();
+        }
         Globals.lastUpdateTime = Time.time;
     }
     
@@ -123,7 +127,7 @@ public class Target : MonoBehaviour
     {
         if (LevelController.lc)
         {
-            LevelController.lc.decreaseLIfe();
+            LevelController.lc.DecreaseLife();
         }
         Globals.lastUpdateTime = Time.time;
     }

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [System.Serializable]
-public class ButtonData
+public class LevelData
 {
     public List<ButtonItem> buttons = new List<ButtonItem>();
 }
