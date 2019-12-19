@@ -1,16 +1,20 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public static class Globals
 {
-    public static int nextClickableTarget = 0;
-    public static float lastUpdateTime = 0;
-    public static float timeToResponse = 2; // Time to click on beat buttons
+    // Id of a next target that user should click.
+    // Any other clicked target is considered as a miss.
+    public static int NextClickableTarget = 0; 
+    public static float LastUpdateTime = 0; // Time of last target disappearance, either on a hit or on a miss
     
-    // Минимальное расстояние во времени между двумя нажатиями на экран.
-    // Не позволяет исчезнуть всем целям по одному нажатию.
-    public static readonly float minTimeDifference = 0.01f;
+    // Minimum time interval between two user taps on a screen
+    // Saves from situation when all targets disappear on a single touch
+    public const float MinTimeDifference = 0.01f;
+    public const float TimeToHit = 2; // Time interval in which it is possible to hit a target  (in seconds)
+    public const string SelectionColor = "#7ABAF2"; // Color of a selection highlight
+    public const float SceneHeight = 10.0f; // Размеры сцены
+    public const float SceneWidth = 5.6f;
+
     public static readonly bool DeveloperMode = (Application.platform != RuntimePlatform.Android);
     // public static readonly bool DeveloperMode = false;
 }

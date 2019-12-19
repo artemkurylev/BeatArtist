@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEditor;
 using UnityEngine;
-using UnityEngine.EventSystems;
 
 public class Target : MonoBehaviour
 {
@@ -13,13 +9,13 @@ public class Target : MonoBehaviour
     public float step;
     public int currentNumber = -1;
     
-    private float creationTime;
-    Color _color;
+    private float _creationTime;
+    private Color _color;
 
     // Start is called before the first frame update
     void Start()
     {
-        creationTime = Time.time;
+        _creationTime = Time.time;
     }
     
     // Update is called once per frame
@@ -27,7 +23,7 @@ public class Target : MonoBehaviour
     {
         smoothAppearance();
 
-        if (Math.Abs(Time.time - Globals.lastUpdateTime) > Globals.minTimeDifference && currentNumber == Globals.nextClickableTarget)
+        if (Math.Abs(Time.time - Globals.LastUpdateTime) > Globals.MinTimeDifference && currentNumber == Globals.NextClickableTarget)
         {
             // Блок, обрабатывающий тапы на экран
             if (Input.touchCount > 0)
@@ -39,8 +35,8 @@ public class Target : MonoBehaviour
                     int width = Screen.width;
                     
                     Vector2 touch_position = touch.position;
-                    touch_position.x = touch_position.x / width * LevelController.SceneWidth - LevelController.SceneWidth/2;
-                    touch_position.y = touch_position.y / height * LevelController.SceneHeight - LevelController.SceneHeight / 2;
+                    touch_position.x = touch_position.x / width * Globals.SceneWidth - Globals.SceneWidth / 2;
+                    touch_position.y = touch_position.y / height * Globals.SceneHeight - Globals.SceneHeight / 2;
                     Vector2 this_position = this.transform.position;
                     
                     float distance = Vector2.Distance(touch_position, this_position);
@@ -53,7 +49,7 @@ public class Target : MonoBehaviour
                         Miss();
                     }
                     Destroy(this.gameObject);
-                    Globals.nextClickableTarget++;
+                    Globals.NextClickableTarget++;
                 }
             }
             
@@ -66,8 +62,8 @@ public class Target : MonoBehaviour
                 int height = Screen.height;
                 int width = Screen.width;
                 
-                click_position.x = click_position.x / width * LevelController.SceneWidth - LevelController.SceneWidth/2;
-                click_position.y = click_position.y / height * LevelController.SceneHeight - LevelController.SceneHeight / 2;
+                click_position.x = click_position.x / width * Globals.SceneWidth - Globals.SceneWidth / 2;
+                click_position.y = click_position.y / height * Globals.SceneHeight - Globals.SceneHeight / 2;
                 Vector2 this_position = this.transform.position;
                 float distance = Vector2.Distance(click_position, this_position);
                 
@@ -80,27 +76,27 @@ public class Target : MonoBehaviour
                     Miss();
                 }
                 Destroy(this.gameObject);
-                Globals.nextClickableTarget++;
+                Globals.NextClickableTarget++;
             }
         }
         
-        if (Time.time - creationTime > LifeTime)
+        if (Time.time - _creationTime > LifeTime)
         {
             Destroy(this.gameObject);
-            if (LevelController.lc)
+            if (LevelController.Instance)
             {
-                LevelController.lc.DecreaseLife();
+                LevelController.Instance.DecreaseLife();
             }
-            Globals.nextClickableTarget++;
+            Globals.NextClickableTarget++;
         }
     }
     void UpdateScore()
     {
-        float clickTime = Time.time - creationTime;
+        float clickTime = Time.time - _creationTime;
         float score = (clickTime / LifeTime) * MaxScore;
-        if (LevelController.lc)
+        if (LevelController.Instance)
         {
-            LevelController.lc.UpdateScore(score);
+            LevelController.Instance.UpdateScore(score);
         }
     }
 
@@ -116,19 +112,19 @@ public class Target : MonoBehaviour
     private void Hit()
     {
         UpdateScore();
-        if (LevelController.lc)
+        if (LevelController.Instance)
         {
-            LevelController.lc.IncreaseLife();
+            LevelController.Instance.IncreaseLife();
         }
-        Globals.lastUpdateTime = Time.time;
+        Globals.LastUpdateTime = Time.time;
     }
     
     private void Miss()
     {
-        if (LevelController.lc)
+        if (LevelController.Instance)
         {
-            LevelController.lc.DecreaseLife();
+            LevelController.Instance.DecreaseLife();
         }
-        Globals.lastUpdateTime = Time.time;
+        Globals.LastUpdateTime = Time.time;
     }
 }

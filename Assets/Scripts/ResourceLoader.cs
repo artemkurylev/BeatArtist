@@ -1,9 +1,7 @@
 ﻿using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEditor;
 using UnityEngine.Networking;
-using System;
 
 namespace Resources
 {

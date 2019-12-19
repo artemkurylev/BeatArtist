@@ -1,9 +1,7 @@
 ﻿using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using TrackSelection;
 using Resources;
-using UnityEditor;
 
 public class TrackChooseMenuScript : MonoBehaviour
 {
@@ -53,9 +51,8 @@ public class TrackChooseMenuScript : MonoBehaviour
             Debug.Log(img.name);
             if (img.name == "Highlight")
             {
-                string htmlValue = "#7ABAF2";
                 Color newCol;
-                if (ColorUtility.TryParseHtmlString(htmlValue, out newCol))
+                if (ColorUtility.TryParseHtmlString(Globals.SelectionColor, out newCol))
                 {
                     newCol.a = 0.4f;
                     img.color = newCol;

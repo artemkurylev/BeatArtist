@@ -1,4 +1,5 @@
 ﻿using System;
+using JetBrains.Annotations;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -6,7 +7,8 @@ public class LevelChanger : MonoBehaviour
 {
     public static LevelChanger Instance;
     public Animator Animator;
-    private String SceneToLoad;
+    
+    private string _sceneToLoad;
 
     public void Start()
     {
@@ -14,21 +16,22 @@ public class LevelChanger : MonoBehaviour
             Instance = this.gameObject.GetComponent<LevelChanger>();
     }
 
-    public void FadeToLevel(String chosenTrack)
+    public void FadeToLevel(string chosenTrack)
     {
-        SceneToLoad = "Level" + chosenTrack.ToString();
+        if (chosenTrack == null) throw new ArgumentNullException(nameof(chosenTrack));
+        _sceneToLoad = "Level" + chosenTrack.ToString();
         Animator.SetBool("Fade", true);
     }
     
-    public void FadeToScene(String scene)
+    public void FadeToScene(string scene)
     {
-        SceneToLoad = scene;
+        _sceneToLoad = scene;
         Animator.SetBool("Fade", true);
     }
 
 
     public void OnFadeComplete()
     {
-        SceneManager.LoadScene(SceneToLoad);
+        SceneManager.LoadScene(_sceneToLoad);
     }
 }
