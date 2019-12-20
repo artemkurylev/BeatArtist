@@ -5,6 +5,7 @@ using UnityEngine;
 public class LevelData
 {
     public List<ButtonItem> buttons = new List<ButtonItem>();
+    public Dictionary<string, string> levelParameters = new Dictionary<string, string>();
 }
 
 [System.Serializable]

@@ -9,17 +9,18 @@ public class RecordController : MonoBehaviour
     /// </summary>
     public Target[] RoundTargets; // Объект кружочка - цели
     public string gameDataFileName;
+    public GameObject FinalCanvas;
+    public static RecordController Instance;
+    public LevelData levelData = new LevelData();
     
-    private static RecordController _instance; // Собственно сам контроллер, чтобы к нему было легко получить доступ от остальных объектов
     private AudioSource song; // Здесь хранится трек
     //public string url; - пока не используется
-    private LevelData _levelData = new LevelData();
+    private bool _endLevel;
 
     void Start()
     {
-        Globals.NextClickableTarget = 0; // Инициализируем глобальные переменные
-        if (_instance == null)
-            _instance = this.gameObject.GetComponent<RecordController>();
+        if (Instance == null)
+            Instance = this.gameObject.GetComponent<RecordController>();
 
         GameObject songObject = GameObject.Find("Song");
         song = songObject.GetComponent<AudioSource>();
@@ -31,6 +32,7 @@ public class RecordController : MonoBehaviour
     }
     void Update()
     {
+        if (_endLevel) return;
         if (!song.isPlaying)
         {
             FinishRecord();
@@ -64,19 +66,12 @@ public class RecordController : MonoBehaviour
         Instantiate(RoundTargets[Random.Range(0, RoundTargets.Length)], position, new Quaternion(0, 0, 0, 0));
 
         var item = new ButtonItem {time = song.time, points = new[] {position}, isSlider = false};
-        _levelData.buttons.Add(item);
+        levelData.buttons.Add(item);
     }
-    
+
     private void FinishRecord()
     {
-        var filePath = Path.Combine(Application.streamingAssetsPath, gameDataFileName);
-        
-        if (!string.IsNullOrEmpty(filePath))
-        {
-            var dataAsJson = JsonUtility.ToJson(_levelData);
-            File.WriteAllText(filePath, dataAsJson);
-        }
-        
-        SceneManager.LoadScene("TrackChooseMenu");
+        _endLevel = true;
+        FinalCanvas.SetActive(true);
     }
 }

@@ -1,6 +1,8 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using UnityEngine;
 using UnityEngine.UI;
+using Random = UnityEngine.Random;
 
 public class LevelController : MonoBehaviour
 {
@@ -16,13 +18,10 @@ public class LevelController : MonoBehaviour
     public GameObject FinalCanvas;
     public Slider ScoreSlider; // Слайдер для отображения очков игрока
     public Slider HpSlider; // Слайдер для отображения жизней игрока
-    public float LifeDecrease = 0.2f; // Уменьшение жизни при промахе / исчезновении цели без попадания
-    public const float StakeLifeIncrease = 0.01f;
-    public int PercentToShowPict = 90;//Процент очков необходимый для показа полной картинки
-    public float bpm = 120; // BPM трека 
+    
+    // public float bpm = 120; // BPM трека 
     public Animator animator; // Объект, отвественный за вызов анимаций уровня
     public string GameDataFileName = "";
-    
     private float _lifePoints; // Current user health
     private float _score; // Current user score
     private float _nextBeatExpiration; // Deadline to hit next target
@@ -34,6 +33,10 @@ public class LevelController : MonoBehaviour
     private int _scorePerLayer; // Score to hit to get next layer of background image
     private int _targetCounter; // Counter for created targets
     private LevelData _levelData; // Level data such as array of targets
+    
+    private float _lifeIncrease;
+    private float _lifeDecrease; // Уменьшение жизни при промахе / исчезновении цели без попадания
+    private int _percentToShowPict; // Процент очков необходимый для показа полной картинки
     
     void Start()
     {
@@ -60,8 +63,20 @@ public class LevelController : MonoBehaviour
         }
         _numOfTargets = _levelData.buttons.Count;
         _maxScore = _numOfTargets * Target.MaxScore;
-        _scorePerLayer = (_maxScore * PercentToShowPict / 100) / layers.Length;
+        _scorePerLayer = (_maxScore * _percentToShowPict / 100) / layers.Length;
         ScoreSlider.maxValue = _maxScore;
+        Debug.Log(_levelData.levelParameters.Keys.Count);
+        foreach (var a in _levelData.levelParameters.Keys)
+        {
+            Debug.Log(a);
+        }
+        _lifeIncrease = (float) Convert.ToInt32(_levelData.levelParameters["LifeIncrease"]) / 100;
+        _lifeDecrease = (float) Convert.ToInt32(_levelData.levelParameters["LifeDecrease"]) / 100;
+        _percentToShowPict = Convert.ToInt32(_levelData.levelParameters["PercentToShowPicture"]);
+        
+        Debug.Log("Input increase is " + _lifeIncrease);
+        Debug.Log("Input decrease is " + _lifeDecrease);
+        Debug.Log("Picture percent is " + _percentToShowPict);
     }
     //IEnumerator GetAudioClip()
     //{
@@ -122,12 +137,12 @@ public class LevelController : MonoBehaviour
     }
     public void DecreaseLife()
     {
-        _lifePoints -= MaxLife * LifeDecrease;
+        _lifePoints -= MaxLife * _lifeDecrease;
         HpSlider.value = _lifePoints;
     }
     public void IncreaseLife()
     {
-        _lifePoints += _lifePoints * StakeLifeIncrease;
+        _lifePoints += _lifePoints * _lifeIncrease;
         HpSlider.value = _lifePoints;
     }
     private Vector2 GetPosition()
