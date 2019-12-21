@@ -1,6 +1,8 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using UnityEngine;
 using UnityEngine.UI;
+using Random = UnityEngine.Random;
 
 public class LevelController : MonoBehaviour
 {
@@ -10,19 +12,15 @@ public class LevelController : MonoBehaviour
     public Target[] RoundTargets; // Объект кружочка - цели
     public Texture2D[] layers; // Массив со слоями
     // public Text Score;
-    public const float MaxLife = 100; // Максимально возможный запас жизни игрока
     public static LevelController Instance; // Собственно сам контроллер, чтобы к нему было легко получить доступ от остальных объектов
     public Text FinalScore;
     public GameObject FinalCanvas;
     public Slider ScoreSlider; // Слайдер для отображения очков игрока
     public Slider HpSlider; // Слайдер для отображения жизней игрока
-    public float LifeDecrease = 0.2f; // Уменьшение жизни при промахе / исчезновении цели без попадания
-    public const float StakeLifeIncrease = 0.01f;
-    public int PercentToShowPict = 90;//Процент очков необходимый для показа полной картинки
-    public float bpm = 120; // BPM трека 
+    
+    // public float bpm = 120; // BPM трека 
     public Animator animator; // Объект, отвественный за вызов анимаций уровня
     public string GameDataFileName = "";
-    
     private float _lifePoints; // Current user health
     private float _score; // Current user score
     private float _nextBeatExpiration; // Deadline to hit next target
@@ -35,6 +33,10 @@ public class LevelController : MonoBehaviour
     private int _targetCounter; // Counter for created targets
     private LevelData _levelData; // Level data such as array of targets
     
+    private float _lifeIncrease;
+    private float _lifeDecrease; // Уменьшение жизни при промахе / исчезновении цели без попадания
+    private int _percentToShowPict; // Процент очков необходимый для показа полной картинки
+
     void Start()
     {
         if(!LoadGameData() || _levelData.buttons.Count == 0)
@@ -43,25 +45,29 @@ public class LevelController : MonoBehaviour
             EndLevel();
         }
         
-        Globals.NextClickableTarget = 0; // Инициализируем глобальные переменные
-        _nextBeatExpiration = _levelData.buttons[0].time;
         if (Instance == null)
             Instance = gameObject.GetComponent<LevelController>();
-        _lifePoints = MaxLife;
-        HpSlider.value = _lifePoints;
         
+        Globals.NextClickableTarget = 0;
+        _nextBeatExpiration = _levelData.buttons[0].time;
+        _lifeIncrease = (float) Convert.ToInt32(_levelData.levelParameters.lifeIncrease) / 100;
+        _lifeDecrease = (float) Convert.ToInt32(_levelData.levelParameters.lifeDecrease) / 100;
+        _percentToShowPict = Convert.ToInt32(_levelData.levelParameters.percentToShowPicture);
+        _lifePoints = Globals.MaxLife;
+        HpSlider.value = _lifePoints;
+        _numOfTargets = _levelData.buttons.Count;
+        _maxScore = _numOfTargets * Target.MaxScore;
+        _scorePerLayer = (_maxScore * _percentToShowPict / 100) / layers.Length;
+        ScoreSlider.maxValue = _maxScore;
+
         GameObject songObject = GameObject.Find("Song");
         _song = songObject.GetComponent<AudioSource>();
-
+        
         //StartCoroutine(GetAudioClip());
         if (_song.clip != null && _song.clip.loadState == AudioDataLoadState.Loaded)
         {
             _song.Play();
         }
-        _numOfTargets = _levelData.buttons.Count;
-        _maxScore = _numOfTargets * Target.MaxScore;
-        _scorePerLayer = (_maxScore * PercentToShowPict / 100) / layers.Length;
-        ScoreSlider.maxValue = _maxScore;
     }
     //IEnumerator GetAudioClip()
     //{
@@ -111,23 +117,23 @@ public class LevelController : MonoBehaviour
         if (_score / _scorePerLayer > _layerNumber)
         {
             //string new_layer = name_template + layer_number.ToString() + format;
-            Texture2D tex = layers[_layerNumber++];
+            _layerNumber = Math.Min(layers.Length - 1, (int) _score / _scorePerLayer);
+            Texture2D tex = layers[_layerNumber];
             GameObject BackImage = GameObject.Find("BackImage");
             BackImage.GetComponent<Image>().sprite = Sprite.Create(tex, new Rect(0.0f, 0.0f, tex.width,
                 tex.height), new Vector2(0.5f, 0.5f), 100.0f);
         }
 
         ScoreSlider.value = _score;
-
     }
     public void DecreaseLife()
     {
-        _lifePoints -= MaxLife * LifeDecrease;
+        _lifePoints -= _lifeDecrease * Globals.MaxLife;
         HpSlider.value = _lifePoints;
     }
     public void IncreaseLife()
     {
-        _lifePoints += _lifePoints * StakeLifeIncrease;
+        _lifePoints = Math.Min(Globals.MaxLife, _lifePoints + _lifeIncrease * Globals.MaxLife);
         HpSlider.value = _lifePoints;
     }
     private Vector2 GetPosition()
