@@ -16,12 +16,12 @@ public class RecordController : MonoBehaviour
     private AudioSource song; // Здесь хранится трек
     //public string url; - пока не используется
     private bool _endLevel;
-
+    
     void Start()
     {
         if (Instance == null)
-            Instance = this.gameObject.GetComponent<RecordController>();
-
+            Instance = gameObject.GetComponent<RecordController>();
+        
         GameObject songObject = GameObject.Find("Song");
         song = songObject.GetComponent<AudioSource>();
 

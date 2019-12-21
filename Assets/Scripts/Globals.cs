@@ -14,6 +14,7 @@ public static class Globals
     public const string SelectionColor = "#7ABAF2"; // Color of a selection highlight
     public const float SceneHeight = 10.0f; // Размеры сцены
     public const float SceneWidth = 5.6f;
+    public const float MaxLife = 100; // Максимально возможный запас жизни игрока
 
     public static readonly bool DeveloperMode = (Application.platform != RuntimePlatform.Android);
     // public static readonly bool DeveloperMode = false;

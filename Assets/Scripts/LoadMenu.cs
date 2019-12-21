@@ -15,22 +15,14 @@ public class LoadMenu : MonoBehaviour
         var lifeIncrease = GetInputFieldData("LifeIncrease");
         var lifeDecrease = GetInputFieldData("LifeDecrease");
         var percentToShowPicture = GetInputFieldData("PercentToShowPicture");
-        Debug.Log("Input increase is " + lifeIncrease);
-        Debug.Log("Input decrease is " + lifeDecrease);
-        Debug.Log("Picture percent is " + percentToShowPicture);
-        
-        
-        var filePath = Path.Combine(Application.streamingAssetsPath, RecordController.Instance.gameDataFileName);
 
+        var filePath = Path.Combine(Application.streamingAssetsPath, RecordController.Instance.gameDataFileName);
         if (!string.IsNullOrEmpty(filePath))
         {
-            RecordController.Instance.levelData.levelParameters = new Dictionary<string, string>
-            {
-                {"LifeIncrease", lifeIncrease},
-                {"LifeDecrease", lifeDecrease},
-                {"PercentToShowPicture", percentToShowPicture}
-            };
-            Debug.Log(RecordController.Instance.levelData.levelParameters["LifeIncrease"]);
+            RecordController.Instance.levelData.levelParameters.lifeIncrease = lifeIncrease;
+            RecordController.Instance.levelData.levelParameters.lifeDecrease = lifeDecrease;
+            RecordController.Instance.levelData.levelParameters.percentToShowPicture = percentToShowPicture;
+            Debug.Log(RecordController.Instance.levelData.levelParameters.lifeIncrease);
             var dataAsJson = JsonUtility.ToJson(RecordController.Instance.levelData);
             Debug.Log(dataAsJson);
             File.WriteAllText(filePath, dataAsJson);
