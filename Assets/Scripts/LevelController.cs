@@ -2,6 +2,9 @@
 using System.IO;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.WSA;
+using Application = UnityEngine.Application;
+using Object = UnityEngine.Object;
 using Random = UnityEngine.Random;
 
 public class LevelController : MonoBehaviour
@@ -9,18 +12,15 @@ public class LevelController : MonoBehaviour
     /// <summary>
     /// Блок с переменными
     /// </summary>
-    public Target[] RoundTargets; // Объект кружочка - цели
-    public Texture2D[] layers; // Массив со слоями
     // public Text Score;
     public static LevelController Instance; // Собственно сам контроллер, чтобы к нему было легко получить доступ от остальных объектов
     public Text FinalScore;
     public GameObject FinalCanvas;
     public Slider ScoreSlider; // Слайдер для отображения очков игрока
     public Slider HpSlider; // Слайдер для отображения жизней игрока
-    
     // public float bpm = 120; // BPM трека 
     public Animator animator; // Объект, отвественный за вызов анимаций уровня
-    public string GameDataFileName = "";
+    
     private float _lifePoints; // Current user health
     private float _score; // Current user score
     private float _nextBeatExpiration; // Deadline to hit next target
@@ -31,15 +31,18 @@ public class LevelController : MonoBehaviour
     private int _numOfTargets; //  Total number of targets on a level
     private int _scorePerLayer; // Score to hit to get next layer of background image
     private int _targetCounter; // Counter for created targets
+    private bool _endLevel; // Flag to stop handle updates
+    private Object[] _layers; // Массив со слоями
+    private Object[] _roundTargets; // Объект кружочка - цели
     private LevelData _levelData; // Level data such as array of targets
-    
+    private LevelMeta _levelMeta; // Level meta such as paths to resources
     private float _lifeIncrease;
     private float _lifeDecrease; // Уменьшение жизни при промахе / исчезновении цели без попадания
     private int _percentToShowPict; // Процент очков необходимый для показа полной картинки
 
     void Start()
     {
-        if(!LoadGameData() || _levelData.buttons.Count == 0)
+        if(!LoadGameData() || _levelData.buttons.Count == 0 || !LoadResources())
         {
             _maxScore = 0;
             EndLevel();
@@ -47,7 +50,7 @@ public class LevelController : MonoBehaviour
         
         if (Instance == null)
             Instance = gameObject.GetComponent<LevelController>();
-        
+
         Globals.NextClickableTarget = 0;
         _nextBeatExpiration = _levelData.buttons[0].time;
         _lifeIncrease = (float) Convert.ToInt32(_levelData.levelParameters.lifeIncrease) / 100;
@@ -57,14 +60,11 @@ public class LevelController : MonoBehaviour
         HpSlider.value = _lifePoints;
         _numOfTargets = _levelData.buttons.Count;
         _maxScore = _numOfTargets * Target.MaxScore;
-        _scorePerLayer = (_maxScore * _percentToShowPict / 100) / layers.Length;
+        _scorePerLayer = (_maxScore * _percentToShowPict / 100) / _layers.Length;
         ScoreSlider.maxValue = _maxScore;
 
-        GameObject songObject = GameObject.Find("Song");
-        _song = songObject.GetComponent<AudioSource>();
-        
         //StartCoroutine(GetAudioClip());
-        if (_song.clip != null && _song.clip.loadState == AudioDataLoadState.Loaded)
+        if (_song != null && _song.clip != null && _song.clip.loadState == AudioDataLoadState.Loaded)
         {
             _song.Play();
         }
@@ -86,6 +86,7 @@ public class LevelController : MonoBehaviour
     //}
     void Update()
     {
+        if (_endLevel) return;
         if (_song)
         {
             float cur_time = _song.time;
@@ -97,7 +98,7 @@ public class LevelController : MonoBehaviour
             {
                 if (_nextBeatExpiration - cur_time < Globals.TimeToHit && _targetCounter < _levelData.buttons.Count)
                 {
-                    Target target = Instantiate(RoundTargets[Random.Range(0, RoundTargets.Length)], GetPosition(), 
+                    Target target = (Target) Instantiate(_roundTargets[Random.Range(0, _roundTargets.Length)], GetPosition(), 
                         new Quaternion(0, 0, 0, 0));
                     target.currentNumber = _targetCounter;
                     _targetCounter++;
@@ -117,8 +118,8 @@ public class LevelController : MonoBehaviour
         if (_score / _scorePerLayer > _layerNumber)
         {
             //string new_layer = name_template + layer_number.ToString() + format;
-            _layerNumber = Math.Min(layers.Length - 1, (int) _score / _scorePerLayer);
-            Texture2D tex = layers[_layerNumber];
+            _layerNumber = Math.Min(_layers.Length - 1, (int) _score / _scorePerLayer);
+            Texture2D tex = (Texture2D) _layers[_layerNumber];
             GameObject BackImage = GameObject.Find("BackImage");
             BackImage.GetComponent<Image>().sprite = Sprite.Create(tex, new Rect(0.0f, 0.0f, tex.width,
                 tex.height), new Vector2(0.5f, 0.5f), 100.0f);
@@ -142,6 +143,7 @@ public class LevelController : MonoBehaviour
     }
     private void EndLevel()
     {
+        _endLevel = true;
         FinalCanvas.SetActive(true);
         int finalScore = (int) _score;
         FinalScore.text = "Your final score is: " + finalScore.ToString() + " of " + _maxScore;
@@ -149,17 +151,39 @@ public class LevelController : MonoBehaviour
     }
     private bool LoadGameData()
     {
-        string filePath = Path.Combine(Application.streamingAssetsPath, GameDataFileName);
+        string filePath = Path.Combine(Application.streamingAssetsPath, Globals.SelectedLevel + ".json");
 
         if (File.Exists(filePath))
         {
             string dataAsJson = File.ReadAllText(filePath);
-
             _levelData = JsonUtility.FromJson<LevelData>(dataAsJson);
+            
+            filePath = Path.Combine(Application.streamingAssetsPath, Globals.SelectedLevel + "Meta.json");
+            if (File.Exists(filePath))
+            {
+                dataAsJson = File.ReadAllText(filePath);
+                _levelMeta = JsonUtility.FromJson<LevelMeta>(dataAsJson);
+                return true;
+            }
+        }
+        
+        return false;
+    }
 
-            return true;
+    private bool LoadResources()
+    {
+        _layers = UnityEngine.Resources.LoadAll(_levelMeta.pictureLink, typeof(Texture2D));
+        _roundTargets = UnityEngine.Resources.LoadAll(Globals.TargetPath, typeof(Target));
+        
+        GameObject songObject = GameObject.Find("Song");
+        _song = songObject.GetComponent<AudioSource>();
+        _song.clip = UnityEngine.Resources.Load<AudioClip>(_levelMeta.songLink);
+        
+        if (_layers == null || _roundTargets == null || _song == null)
+        {
+            return false;
         }
 
-        return false;
+        return true;
     }
 }

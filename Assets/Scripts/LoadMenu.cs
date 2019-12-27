@@ -16,7 +16,7 @@ public class LoadMenu : MonoBehaviour
         var lifeDecrease = GetInputFieldData("LifeDecrease");
         var percentToShowPicture = GetInputFieldData("PercentToShowPicture");
 
-        var filePath = Path.Combine(Application.streamingAssetsPath, RecordController.Instance.gameDataFileName);
+        var filePath = Path.Combine(Application.streamingAssetsPath, Globals.SelectedLevel + ".json");
         if (!string.IsNullOrEmpty(filePath))
         {
             RecordController.Instance.levelData.levelParameters.lifeIncrease = lifeIncrease;

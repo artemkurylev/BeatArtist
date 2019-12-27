@@ -1,37 +1,59 @@
 ﻿using System;
+using System.Runtime.CompilerServices;
 using JetBrains.Annotations;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class LevelChanger : MonoBehaviour
 {
-    public static LevelChanger Instance;
     public Animator Animator;
-    
+    public static LevelChanger Instance;
+
     private string _sceneToLoad;
+    private static readonly object Lock = new object();
 
     public void Start()
     {
         if (Instance == null)
-            Instance = this.gameObject.GetComponent<LevelChanger>();
+        {
+            Instance = gameObject.GetComponent<LevelChanger>();
+        }
     }
 
-    public void FadeToLevel(string chosenTrack)
+    public void FadeToLevel()
     {
-        if (chosenTrack == null) throw new ArgumentNullException(nameof(chosenTrack));
-        _sceneToLoad = "Level" + chosenTrack.ToString();
-        Animator.SetBool("Fade", true);
+        lock (Lock)
+        {
+            _sceneToLoad = "Scenes/Level";
+            Animator.SetBool("Fade", true);
+        }
     }
     
+    public void FadeToLevelRecord()
+    {
+        lock (Lock)
+        {
+            _sceneToLoad = "Scenes/LevelRecord";
+            Animator.SetBool("Fade", true);
+        }
+    }
+
     public void FadeToScene(string scene)
     {
-        _sceneToLoad = scene;
-        Animator.SetBool("Fade", true);
+        lock (Lock)
+        {
+            _sceneToLoad = "Scenes/" + scene;
+            Animator.SetBool("Fade", true);
+        }
     }
 
 
     public void OnFadeComplete()
     {
-        SceneManager.LoadScene(_sceneToLoad);
+        Debug.Log(_sceneToLoad);
+        lock (Lock)
+        {
+            SceneManager.LoadScene(_sceneToLoad);
+        }
     }
 }
