@@ -9,9 +9,9 @@ EditorBuildSettings:
     path: Assets/Scenes/TrackChooseMenu.unity
     guid: 7612842c62bc3634f8f7cdd7dd9aa45f
   - enabled: 1
-    path: Assets/Scenes/Level1.unity
+    path: Assets/Scenes/Level.unity
     guid: 965f02252d50f6648b83bdd61f1b8cc8
   - enabled: 1
-    path: Assets/Scenes/Level1Record.unity
+    path: Assets/Scenes/LevelRecord.unity
     guid: 6948b236114d4124eafc089c7b3c12d8
   m_configObjects: {}
